@@ -1,0 +1,26 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: viptransfer
+      POSTGRES_USER: viptransfer
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-change_me}
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+      - ./server/schema.sql:/docker-entrypoint-initdb.d/001.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U viptransfer -d viptransfer"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+  app:
+    build: .
+    env_file: .env
+    environment:
+      DATABASE_URL: postgres://viptransfer:${DB_PASSWORD:-change_me}@db:5432/viptransfer
+    ports: ["8080:8080"]
+    depends_on:
+      db:
+        condition: service_healthy
+volumes:
+  dbdata:
