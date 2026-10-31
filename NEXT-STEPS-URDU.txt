@@ -1,0 +1,16 @@
+اگلے مراحل — آسان اردو
+=====================
+
+1) ZIP فائل کو موبائل میں Extract کریں۔
+2) GitHub repository میں public فولڈر کے اندر index.html اور config.js اپ لوڈ کریں۔
+3) Supabase Project URL اور Publishable key صرف config.js میں ڈالیں۔ یہ معلومات خود اپنے فون میں درج کریں؛ Secret key ہرگز نہیں۔
+4) Supabase SQL Editor میں پہلے backup/موجودہ schema کا جائزہ لیں۔ پھر supabase/setup.sql کو ایک بار چلائیں۔ اگر کوئی error آئے تو مزید SQL نہ چلائیں؛ error کا screenshot بھیجیں۔
+5) اپنے email سے ایپ میں sign in کریں۔
+6) اپنے account کو admin بنانے کے لیے setup.sql کے آخر میں دی گئی update query میں اپنا اصل email ڈال کر SQL Editor میں الگ سے چلائیں۔ یہ کام صرف اپنے admin account کے لیے کریں۔
+7) Netlify میں publish directory public ہونی چاہیے۔ موجودہ domain/DNS کو تبدیل نہ کریں۔
+
+نوٹ:
+- یہ starter ابھی گاڑی کی دستاویزات کی upload/storage screen، notifications، real-time chat subscriptions، اور محفوظ 4-digit PIN verification مکمل نہیں کرتا۔
+- Driver icon dropdown صرف preference محفوظ کرتا ہے؛ عام PWA میں ہر driver کے لیے الگ Android launcher icon نہیں بدل سکتا۔
+- Customer کو driver کا فون نمبر دکھانے کے لیے کوئی UI نہیں بنایا گیا۔
+- Support email صرف limuzin@196vip.si ہے۔

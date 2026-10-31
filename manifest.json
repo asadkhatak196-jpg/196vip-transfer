@@ -1,10 +1,9 @@
 {
-  "name": "VIP TRANSFER",
-  "short_name": "VIP TRANSFER",
+  "name": "VIP Transfer",
+  "short_name": "VIP Transfer",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#050505",
-  "theme_color": "#050505",
-  "description": "VIP TRANSFER bookings and driver offers",
+  "background_color": "#090909",
+  "theme_color": "#090909",
   "icons": []
 }
