@@ -1,6 +1,5 @@
-// Paste your Supabase Project URL and Publishable (anon) key below.
-// NEVER put the Supabase Secret/service_role key in this file.
+// Public browser configuration only. Never put a Supabase Secret key here.
 window.VIP_SUPABASE_CONFIG = {
-  url: "YOUR_SUPABASE_PROJECT_URL",
-  anonKey: "YOUR_SUPABASE_PUBLISHABLE_KEY"
+     https://cqcajxspxnrruzpkxuxz.supabase.co/rest/v1/
+sb_publishable_B0SNSUJsOLyochAyODXjTg_PywmbYcq
 };
