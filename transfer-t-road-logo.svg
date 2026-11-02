@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">Transfer road T logo</title>
+  <defs>
+    <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#071044"/>
+      <stop offset=".48" stop-color="#087fe8"/>
+      <stop offset=".72" stop-color="#08c5ef"/>
+      <stop offset="1" stop-color="#071044"/>
+    </linearGradient>
+    <linearGradient id="letter" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#080b3b"/>
+      <stop offset=".55" stop-color="#075bd0"/>
+      <stop offset="1" stop-color="#08c5ef"/>
+    </linearGradient>
+    <linearGradient id="road" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#081044"/>
+      <stop offset="1" stop-color="#064bb8"/>
+    </linearGradient>
+  </defs>
+  <circle cx="256" cy="256" r="224" fill="#fff" stroke="url(#ring)" stroke-width="17"/>
+  <circle cx="256" cy="256" r="211" fill="none" stroke="#0a65d6" stroke-width="3" opacity=".8"/>
+  <path d="M145 145 H365 L344 204 H261 L214 370 H145 L194 204 H117 Z"
+        fill="url(#letter)" stroke="#071044" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M150 383 C220 321 308 282 455 269 C394 292 354 324 337 364
+           C326 390 345 416 385 427 L257 448 C213 437 177 414 150 383Z"
+        fill="url(#road)" stroke="#fff" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M151 383 C238 315 342 278 455 269" fill="none"
+        stroke="#08b9ed" stroke-width="10" stroke-linecap="round"/>
+  <path d="M264 423 L282 392 L305 392 L288 423 Z
+           M310 370 L328 345 L349 345 L331 370 Z
+           M354 327 L371 310 L390 310 L372 327 Z
+           M398 291 L414 281 L431 281 L415 291 Z"
+        fill="#fff"/>
+</svg>
