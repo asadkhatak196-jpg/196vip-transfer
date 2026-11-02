@@ -1,7 +1,7 @@
-// Add your Supabase Project URL and Publishable (anon) key below.
-// Never place a Supabase service_role or secret key in this file.
-window.VIP_SUPABASE_CONFIG = {
-  url: "https://cqcajxspxnrruzpkxuxz.supabase.co/rest/v1/",
-  anonKey: ".sb_publishable_B0SNSUJsOLyochAyODXjTg_PywmbYcq"
+/* Add your existing Supabase Project URL and Publishable (anon) key. Never use service_role/secret keys. */
+window.TRANSFER_CONFIG = {
+  SUPABASE_URL: "https://cqcajxspxnrruzpkxuxz.supabase.co/rest/v1/",
+  SUPABASE_ANON_KEY: "sb_publishable_B0SNSUJsOLyochAyODXjTg_PywmbYcq",
+  SUPPORT_EMAIL: "Limuzin@196vip.si",
+  APP_NAME: "Transfer"
 };
-

@@ -1,28 +1,4 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#0b1018"><meta name="description" content="Transfer — private rides and chauffeur bookings">
-  <title>Transfer</title><link rel="stylesheet" href="app.css">
-</head>
-<body>
-  <header class="topbar"><a class="brand" href="#">TRANSFER</a><div class="top-actions"><a href="mailto:Limuzin@196vip.si">Limuzin@196vip.si</a><button id="signout" class="button ghost hidden">Sign out</button></div></header>
-  <main class="shell">
-    <section id="auth-view" class="panel auth-panel">
-      <div class="eyebrow">PRIVATE RIDES • SIMPLE BOOKING</div><h1>Welcome to <span>Transfer</span></h1>
-      <p class="muted">Sign in securely with your email. We will send you a one-time verification code.</p>
-      <form id="otp-form" class="stack"><label>Email address<input id="email" type="email" autocomplete="email" required placeholder="you@example.com"></label><button class="button" type="submit" id="send-code">Send verification code</button></form>
-      <form id="verify-form" class="stack verify hidden"><label>6-digit verification code<input id="otp" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" placeholder="000000" required></label><p class="hint">If you don't see the OTP code in your inbox, please check your Spam or Junk folder.</p><button class="button" type="submit">Verify and sign in</button></form>
-      <p id="auth-status" class="status" role="status"></p>
-    </section>
-    <section id="app-view" class="hidden">
-      <div class="welcome-row"><div><div class="eyebrow">YOUR TRANSFER ACCOUNT</div><h1 id="welcome-title">Dashboard</h1><p id="user-email" class="muted"></p></div><button class="button secondary" id="refresh">Refresh</button></div>
-      <nav id="tabs" class="tabs"></nav>
-      <div id="view-content" class="view-content"></div>
-      <p class="support-line">Support: <a href="mailto:Limuzin@196vip.si">Limuzin@196vip.si</a></p>
-    </section>
-  </main>
-  <footer>© <span id="year"></span> Transfer · Riyadh, Saudi Arabia</footer>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="config.js"></script><script src="app.js"></script>
-</body></html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#090909"><meta name="description" content="Book your car in your destination city with Transfer. Airport transfers and shuttle services."><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Transfer"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><link rel="apple-touch-icon" href="icons/icon-192.png"><link rel="manifest" href="manifest.json"><title>Transfer</title><link rel="icon" href="logo.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css"></head><body><header class="topbar"><div class="brand"><img src="logo.svg" alt=""><span>TRANSFER</span></div><div class="top-actions"><button id="installBtn" class="secondary small hidden" type="button">Install App</button><a href="mailto:Limuzin@196vip.si">Support</a></div></header><main class="wrap">
+<section id="authView" class="card"><div class="mark"><img src="logo.svg" alt="Transfer"></div><h1>Book Your Car</h1><p class="eyebrow service-line">Airport Transfer &amp; Shuttle Services</p><p class="tagline">Your Favourite Car, Right at Your Doorstep.</p><div class="vehicle-strip"><strong>Small Cars &amp; Economy · Sedan · SUV · GMC · Yukon · Tahoe · Lexus · Ford Taurus · Mercedes Vito · Mercedes Sprinter · Hiace Coaster</div><p class="muted">Book a car in your destination city from anywhere in the world. You can arrange a Riyadh ride while you are in the USA, or book travel between Jeddah, Makkah, another city, or an airport.</p><p class="muted">Sign in securely to request a vehicle and receive offers from drivers.</p><form id="sendOtpForm"><label>Email address</label><input id="email" type="email" autocomplete="email" required placeholder="you@example.com"><label>Phone number <small>(for account records)</small></label><input id="phone" type="tel" autocomplete="tel" required placeholder="+966…"><button id="sendOtpBtn">Send OTP</button></form><p class="notice">Your OTP may be in your spam folder. Please check your Spam or Junk folder.</p><form id="verifyOtpForm" class="hidden"><label>6-digit verification code</label><input id="otp" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" required placeholder="000000"><button>Verify and sign in</button></form><p id="authMessage" class="message" role="status"></p></section>
+<section id="roleView" class="card hidden"><h1>Choose your account</h1><p class="muted">Select how you want to use Transfer.</p><div class="choices"><button data-role="customer">Customer</button><button data-role="driver">Driver</button></div><p id="roleMessage" class="message"></p><button id="roleSignOut" class="secondary">Sign out</button></section>
+<section id="appView" class="hidden"><div class="appHeading"><div><p class="eyebrow">TRANSFER ACCOUNT</p><h1 id="roleTitle">Dashboard</h1><p id="accountEmail" class="muted"></p></div><button id="refreshBtn" class="secondary small">Refresh</button></div><nav id="tabs" class="tabs"></nav><div id="content"></div><button id="logoutBtn" class="secondary">Sign out</button></section></main><footer>© <span id="year"></span> Transfer · Riyadh, Saudi Arabia · <a href="mailto:Limuzin@196vip.si">Limuzin@196vip.si</a></footer><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js"></script><script src="app.js"></script><script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(console.error));}</script></body></html>
