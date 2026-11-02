@@ -2,140 +2,96 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#0b0b0b"><title>VIP Transfer</title>
-<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#090d14"><title>196 VIP Transfer</title>
 <style>
-:root{--bg:#090909;--panel:#151515;--gold:#d8b45a;--muted:#aaa;--line:#333}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#f7f4ed;font:16px system-ui,Arial}
-header{padding:18px 5%;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
-.brand{font-size:22px;font-weight:800;color:var(--gold);letter-spacing:1px}
-main{max-width:950px;margin:28px auto;padding:0 16px}.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;margin:14px 0}
-h1,h2,h3{margin-top:0}h1{color:var(--gold)}label{display:block;margin:12px 0 6px;color:#ddd}
-input,select,textarea,button{font:inherit;border-radius:8px;padding:12px;width:100%}
-input,select,textarea{background:#090909;color:white;border:1px solid #444}
-button{background:var(--gold);border:0;color:#111;font-weight:750;cursor:pointer;margin-top:12px}
-button.secondary{background:#333;color:#fff}button.danger{background:#8e3333;color:#fff}
-.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
-.small{font-size:13px;color:var(--muted)}.hidden{display:none!important}.pill{display:inline-block;padding:4px 9px;background:#292929;border-radius:20px;color:var(--gold);font-size:12px}
-.item{border-top:1px solid var(--line);padding:14px 0}.item:first-child{border:0}
-#notice{padding:10px;border-radius:8px;background:#282316;color:#f2d88e;margin:12px 0;white-space:pre-wrap}
-a{color:var(--gold)}.top-actions{display:flex;gap:8px;align-items:center}.top-actions button{width:auto;margin:0}
+:root{--bg:#090d14;--panel:#121a26;--panel2:#182334;--gold:#d7b56d;--text:#f5f2eb;--muted:#aeb8c5;--line:#2b394b;--red:#d86c6c;--green:#70c49a}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(160deg,#090d14,#101a29);color:var(--text);font:15px system-ui,-apple-system,Segoe UI,Arial}button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padding:12px 16px;background:var(--gold);color:#15120b;font-weight:750}button.secondary{background:#263448;color:var(--text);border:1px solid var(--line)}button.danger{background:#542b32;color:#fff}button:disabled{opacity:.45;cursor:not-allowed}input,select,textarea{width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);background:#0d1520;color:var(--text);margin-top:6px}textarea{min-height:85px;resize:vertical}label{display:block;color:var(--muted);font-size:13px;margin:10px 0}.wrap{max-width:1000px;margin:auto;padding:18px}.top{display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--line);padding:12px 0 18px}.logo{width:68px;height:68px;object-fit:contain;border-radius:50%}.brand{font-size:21px;font-weight:850;letter-spacing:.4px}.sub{color:var(--muted);font-size:12px}.spacer{flex:1}.card{background:rgba(18,26,38,.96);border:1px solid var(--line);border-radius:16px;padding:18px;margin:14px 0;box-shadow:0 8px 30px #0003}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.tabs button{background:#1d2a3b;color:var(--text)}.tabs button.active{background:var(--gold);color:#15120b}.muted{color:var(--muted)}.status{padding:10px;border-radius:10px;background:#172536;margin:10px 0;color:var(--muted);white-space:pre-wrap}.good{color:var(--green)}.bad{color:#ff9c9c}.item{border:1px solid var(--line);border-radius:12px;padding:14px;margin:10px 0;background:#101a27}.item h3{margin:0 0 8px}.price{color:var(--gold);font-size:20px;font-weight:800}.hidden{display:none!important}.small{font-size:12px;color:var(--muted)}.pill{font-size:11px;border:1px solid var(--line);padding:4px 8px;border-radius:99px;color:var(--gold)}.chatlog{max-height:250px;overflow:auto;background:#0c1420;border-radius:10px;padding:10px}.msg{padding:8px 10px;border-radius:10px;background:#1b2a3d;margin:6px 0;max-width:90%}.foot{text-align:center;color:var(--muted);padding:28px 0;font-size:12px}
+@media(max-width:650px){.grid{grid-template-columns:1fr}.wrap{padding:12px}.top{gap:10px}.brand{font-size:18px}.logo{width:56px;height:56px}}
 </style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/config.js"></script>
 </head>
-<body>
-<header><div class="brand">VIP TRANSFER</div><div class="top-actions"><span id="who" class="small"></span><button id="logout" class="secondary hidden">Log out</button></div></header>
-<main>
-<div id="notice" class="hidden"></div>
-<section id="auth" class="card">
-<h1>Welcome to VIP Transfer</h1><p class="small">Sign in securely with your email. We will send you a one-time code.</p>
-<label>Email address</label><input id="email" type="email" autocomplete="email" placeholder="you@example.com">
-<button id="sendOtp">Send email code</button>
-<div id="verifyBox" class="hidden"><label>One-time code</label><input id="otp" inputmode="numeric" autocomplete="one-time-code" placeholder="Enter code from email"><button id="verifyOtp">Verify and continue</button></div>
-</section>
-
-<section id="chooseRole" class="card hidden">
-<h2>Complete your profile</h2><label>Your name</label><input id="fullName" placeholder="Full name">
-<label>How will you use VIP Transfer?</label><select id="roleChoice"><option value="customer">Customer</option><option value="driver">Driver</option></select>
-<button id="saveProfile">Continue</button><p class="small">Admin access is assigned securely by the system administrator.</p>
-</section>
-
-<section id="customer" class="hidden">
-<div class="card"><h1>Book a transfer</h1><div class="row">
-<div><label>Pickup location</label><input id="pickup" placeholder="Pickup address"></div>
-<div><label>Destination</label><input id="destination" placeholder="Destination address"></div>
-<div><label>Pickup date and time</label><input id="pickupAt" type="datetime-local"></div>
-<div><label>Vehicle category</label><select id="category"><option>Comfort</option><option>Business</option><option>VIP</option></select></div>
-<div><label>Passengers</label><input id="passengers" type="number" min="1" max="20" value="1"></div>
-</div><label>Notes (optional)</label><textarea id="bookingNotes" rows="2"></textarea><button id="createBooking">Send booking request</button></div>
-<div class="card"><h2>My bookings and driver offers</h2><div id="customerBookings">Loading…</div></div>
-</section>
-
-<section id="driver" class="hidden">
-<div class="card"><h1>Driver area</h1><p id="driverStatus" class="small"></p><h2>Driver application</h2>
-<div class="row"><div><label>Vehicle category</label><select id="vehicleCategory"><option>Comfort</option><option>Business</option><option>VIP</option></select></div>
-<div><label>Vehicle make and model</label><input id="vehicleModel" placeholder="Toyota Camry"></div>
-<div><label>Vehicle year</label><input id="vehicleYear" type="number" min="1990" max="2035"></div>
-<div><label>Vehicle plate / number</label><input id="vehiclePlate" placeholder="Vehicle plate"></div></div>
-<label>Vehicle photo URL (optional)</label><input id="vehiclePhoto" placeholder="https://…">
-<label>Application notes</label><textarea id="driverNotes" rows="2"></textarea><button id="applyDriver">Submit / update application</button></div>
-<div class="card"><h2>Open customer requests</h2><div id="openBookings">Loading…</div></div>
-<div class="card"><h2>My offers</h2><div id="driverOffers">Loading…</div></div>
-<div class="card"><h2>Driver icon shortcut</h2><p class="small">This starter can save your preferred icon choice inside your profile. Changing the actual Android app icon per driver requires a native Android app or supported launcher shortcuts; a normal website cannot replace its installed PWA icon individually.</p>
-<label>Choose an icon style</label><select id="driverIcon"><option value="car">Car</option><option value="calculator">Calculator</option><option value="clock">Clock</option><option value="gallery">Gallery</option><option value="number">Number</option></select>
-<label>4-digit icon access code</label><input id="iconPin" type="password" inputmode="numeric" maxlength="4" placeholder="4 digits"><button id="saveIcon">Save icon preference</button></div>
-</section>
-
-<section id="admin" class="hidden">
-<div class="card"><h1>Admin panel</h1><h2>Settings</h2><label><input id="offersEnabled" type="checkbox" style="width:auto"> Allow driver offers</label><label>Pricing mode</label><select id="pricingMode"><option value="driver_offers">Driver offers</option><option value="admin_fixed">Admin fixed price</option><option value="both">Both</option></select><button id="saveSettings">Save settings</button></div>
-<div class="card"><h2>Driver applications</h2><div id="adminDrivers">Loading…</div></div>
-<div class="card"><h2>All bookings</h2><div id="adminBookings">Loading…</div></div>
-</section>
-
-<section id="chat" class="card hidden"><h2>Booking chat</h2><p id="chatTitle" class="small"></p><div id="chatMessages"></div><label>Message</label><textarea id="chatText" rows="2"></textarea><button id="sendMessage">Send message</button><button id="closeChat" class="secondary">Close chat</button></section>
-<footer class="small" style="text-align:center;padding:24px">Support: <a href="mailto:limuzin@196vip.si">limuzin@196vip.si</a></footer>
-</main>
+<body><div class="wrap">
+<header class="top"><img class="logo" src="./logo.png" alt="Transfer logo"><div><div class="brand">196 VIP TRANSFER</div><div class="sub">Premium transport · Riyadh, Saudi Arabia</div></div><div class="spacer"></div><button id="logout" class="secondary hidden">Sign out</button></header>
+<div id="notice" class="status">Loading 196 VIP Transfer…</div>
+<section id="auth" class="card hidden"><h2>Email sign in</h2><p class="muted">اپنا Gmail یا ای میل درج کریں۔ OTP آپ کے ای میل پر آئے گا۔ Spam فولڈر بھی چیک کریں۔</p>
+<label>Email address<input id="email" type="email" autocomplete="email" placeholder="name@gmail.com"></label><button id="sendOtp">Send OTP</button>
+<label>6-digit OTP<input id="otp" inputmode="numeric" maxlength="6" placeholder="123456"></label><button id="verifyOtp">Verify and sign in</button><div id="authMsg" class="status"></div></section>
+<section id="app" class="hidden"><div class="row"><div id="welcome" class="muted"></div><div class="spacer"></div><span id="rolePill" class="pill"></span></div><nav id="tabs" class="tabs"></nav><main id="view"></main></section>
+<div class="foot">© 196 VIP Transfer · Riyadh · Secure email sign-in</div></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="./config.js"></script>
 <script>
-(() => {
- const cfg=window.VIP_SUPABASE_CONFIG||{};
- const $=id=>document.getElementById(id);
- let sb,user,profile,chatBooking=null;
- function say(msg){$('notice').textContent=msg;$('notice').classList.remove('hidden');}
- function clearSay(){$('notice').classList.add('hidden');}
- function show(id){['auth','chooseRole','customer','driver','admin'].forEach(x=>$(x).classList.add('hidden'));$(id).classList.remove('hidden');}
- function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
- async function call(p){const {data,error}=await p;if(error)throw error;return data;}
- async function init(){
-  if(!cfg.url||!cfg.anonKey||cfg.url.includes('YOUR_')){say('Setup needed: add your Supabase Project URL and Publishable (anon) key in public/config.js. Never use the Secret/service_role key here.');return;}
-  sb=window.supabase.createClient(cfg.url,cfg.anonKey);
-  const {data:{session}}=await sb.auth.getSession();
-  if(session) await enter(session.user); else show('auth');
-  sb.auth.onAuthStateChange((_e,s)=>{if(s)enter(s.user);else{user=null;profile=null;show('auth');$('logout').classList.add('hidden');$('who').textContent='';}});
- }
- async function enter(u){
-  user=u;$('logout').classList.remove('hidden');$('who').textContent=u.email||'';
-  try{profile=await call(sb.from('vip_profiles').select('*').eq('id',u.id).maybeSingle());
-   if(!profile){show('chooseRole');return;}
-   if(profile.role==='admin'){show('admin');await loadAdmin();}
-   else if(profile.role==='driver'){show('driver');await loadDriver();}
-   else{show('customer');await loadCustomer();}
-  }catch(e){say('Profile could not load: '+e.message+'. Check that supabase/setup.sql was run successfully.');}
- }
- $('sendOtp').onclick=async()=>{try{await call(sb.auth.signInWithOtp({email:$('email').value.trim(),options:{shouldCreateUser:true}}));$('verifyBox').classList.remove('hidden');say('A sign-in code has been sent to your email.');}catch(e){say(e.message)}};
- $('verifyOtp').onclick=async()=>{try{await call(sb.auth.verifyOtp({email:$('email').value.trim(),token:$('otp').value.trim(),type:'email'}));clearSay();}catch(e){say(e.message)}};
- $('logout').onclick=()=>sb.auth.signOut();
- $('saveProfile').onclick=async()=>{try{await call(sb.from('vip_profiles').upsert({id:user.id,email:user.email,full_name:$('fullName').value.trim(),role:$('roleChoice').value},{onConflict:'id'}));await enter(user);}catch(e){say(e.message)}};
- $('createBooking').onclick=async()=>{try{await call(sb.from('vip_bookings').insert({customer_id:user.id,pickup:$('pickup').value.trim(),destination:$('destination').value.trim(),pickup_at:$('pickupAt').value||null,category:$('category').value,passengers:Number($('passengers').value||1),notes:$('bookingNotes').value.trim()||null}));say('Booking request submitted.');await loadCustomer();}catch(e){say(e.message)}};
- async function loadCustomer(){
-  const rows=await call(sb.from('vip_bookings').select('*,vip_offers(*,vip_vehicles(category,model,plate))').eq('customer_id',user.id).order('created_at',{ascending:false}));
-  $('customerBookings').innerHTML=rows.length?rows.map(b=>`<div class="item"><b>${esc(b.pickup)} → ${esc(b.destination)}</b><div class="small">${esc(b.category)} · ${esc(b.status)} · ${b.pickup_at?new Date(b.pickup_at).toLocaleString():'Time not set'}</div>${(b.vip_offers||[]).map(o=>`<div class="item">Offer: SAR ${esc(o.price_sar)} · ${esc(o.vip_vehicles?.category||'')} ${esc(o.vip_vehicles?.model||'')} · ${esc(o.vip_vehicles?.plate||'')} <button onclick="window.acceptOffer('${o.id}','${b.id}')">Accept offer</button></div>`).join('')}<button class="secondary" onclick="window.openChat('${b.id}')">Open chat</button></div>`).join(''):'No bookings yet.';
- }
- window.acceptOffer=async(offerId,bookingId)=>{try{await call(sb.from('vip_offers').update({status:'accepted'}).eq('id',offerId));await call(sb.from('vip_bookings').update({status:'accepted',accepted_offer_id:offerId}).eq('id',bookingId));say('Offer accepted.');await loadCustomer();}catch(e){say(e.message)}};
- $('applyDriver').onclick=async()=>{try{await call(sb.from('vip_driver_applications').upsert({driver_id:user.id,vehicle_category:$('vehicleCategory').value,vehicle_model:$('vehicleModel').value.trim(),vehicle_year:Number($('vehicleYear').value)||null,vehicle_plate:$('vehiclePlate').value.trim(),vehicle_photo_url:$('vehiclePhoto').value.trim()||null,notes:$('driverNotes').value.trim()||null,status:'pending'},{onConflict:'driver_id'}));say('Driver application sent. Admin approval is required before offering.');}catch(e){say(e.message)}};
- async function loadDriver(){
-  const app=await call(sb.from('vip_driver_applications').select('*').eq('driver_id',user.id).maybeSingle());
-  $('driverStatus').textContent=app?'Application status: '+app.status:'Please submit your driver application.';
-  if(app){$('vehicleCategory').value=app.vehicle_category||'Comfort';$('vehicleModel').value=app.vehicle_model||'';$('vehicleYear').value=app.vehicle_year||'';$('vehiclePlate').value=app.vehicle_plate||'';$('vehiclePhoto').value=app.vehicle_photo_url||'';$('driverNotes').value=app.notes||'';}
-  const [bookings,offers]=await Promise.all([call(sb.from('vip_bookings').select('*').eq('status','open').order('created_at',{ascending:false})),call(sb.from('vip_offers').select('*,vip_bookings(pickup,destination,status)').eq('driver_id',user.id).order('created_at',{ascending:false}))]);
-  $('openBookings').innerHTML=bookings.length?bookings.map(b=>`<div class="item"><b>${esc(b.pickup)} → ${esc(b.destination)}</b><div class="small">${esc(b.category)} · ${esc(b.passengers)} passengers</div><label>Your price (SAR)</label><input id="price-${b.id}" type="number" min="1" step=".01"><button onclick="window.makeOffer('${b.id}')">Send offer</button></div>`).join(''):'No open requests.';
-  $('driverOffers').innerHTML=offers.length?offers.map(o=>`<div class="item">SAR ${esc(o.price_sar)} · ${esc(o.status)} · ${esc(o.vip_bookings?.pickup||'')} → ${esc(o.vip_bookings?.destination||'')}</div>`).join(''):'No offers yet.';
- }
- window.makeOffer=async bookingId=>{try{const price=Number($('price-'+bookingId).value);if(!(price>0))throw Error('Enter a valid price.');const app=await call(sb.from('vip_driver_applications').select('id,status').eq('driver_id',user.id).single());if(app.status!=='approved')throw Error('Your driver application must be approved by admin first.');await call(sb.from('vip_offers').insert({booking_id:bookingId,driver_id:user.id,price_sar:price}));say('Offer sent.');await loadDriver();}catch(e){say(e.message)}};
- $('saveIcon').onclick=async()=>{const pin=$('iconPin').value;if(!/^\d{4}$/.test(pin)){say('Enter exactly four digits.');return;}try{await call(sb.from('vip_profiles').update({driver_icon:$('driverIcon').value,icon_pin_hash:null}).eq('id',user.id));$('iconPin').value='';say('Icon preference saved. Note: this demo does not store your PIN; real PIN protection must be implemented securely before release.');}catch(e){say(e.message)}};
- async function loadAdmin(){
-  const settings=await call(sb.from('vip_settings').select('*').eq('id',1).single());$('offersEnabled').checked=settings.offers_enabled;$('pricingMode').value=settings.pricing_mode;
-  const [drivers,bookings]=await Promise.all([call(sb.from('vip_driver_applications').select('*,vip_profiles(full_name,email)').order('created_at',{ascending:false})),call(sb.from('vip_bookings').select('*').order('created_at',{ascending:false}).limit(100))]);
-  $('adminDrivers').innerHTML=drivers.length?drivers.map(d=>`<div class="item"><b>${esc(d.vip_profiles?.full_name||d.vip_profiles?.email||d.driver_id)}</b> · ${esc(d.vehicle_category)} ${esc(d.vehicle_model)} · ${esc(d.vehicle_plate)} · <span class="pill">${esc(d.status)}</span><button onclick="window.driverStatus('${d.driver_id}','approved')">Approve</button><button class="danger" onclick="window.driverStatus('${d.driver_id}','disabled')">Disable</button></div>`).join(''):'No applications.';
-  $('adminBookings').innerHTML=bookings.map(b=>`<div class="item">${esc(b.pickup)} → ${esc(b.destination)} · ${esc(b.status)} · ${esc(b.category)}</div>`).join('')||'No bookings.';
- }
- window.driverStatus=async(id,status)=>{try{await call(sb.from('vip_driver_applications').update({status}).eq('driver_id',id));await loadAdmin();}catch(e){say(e.message)}};
- $('saveSettings').onclick=async()=>{try{await call(sb.from('vip_settings').update({offers_enabled:$('offersEnabled').checked,pricing_mode:$('pricingMode').value}).eq('id',1));say('Settings saved.');}catch(e){say(e.message)}};
- window.openChat=async bookingId=>{chatBooking=bookingId;$('chat').classList.remove('hidden');await loadChat();};
- async function loadChat(){try{const rows=await call(sb.from('vip_messages').select('*').eq('booking_id',chatBooking).order('created_at'));$('chatMessages').innerHTML=rows.map(m=>`<div class="item"><b>${m.sender_id===user.id?'You':'Participant'}</b>: ${esc(m.body)} <span class="small">${new Date(m.created_at).toLocaleString()}</span></div>`).join('')||'No messages yet.';$('chatTitle').textContent='Booking '+chatBooking;}catch(e){say(e.message)}}
- $('sendMessage').onclick=async()=>{try{const body=$('chatText').value.trim();if(!body)return;await call(sb.from('vip_messages').insert({booking_id:chatBooking,sender_id:user.id,body}));$('chatText').value='';await loadChat();}catch(e){say(e.message)}};
- $('closeChat').onclick=()=>$('chat').classList.add('hidden');
- init();
+(()=> {
+const $=id=>document.getElementById(id), cfg=window.VIP_SUPABASE_CONFIG||{};
+let sb=null,user=null,profile=null,active='home',settings={offers_enabled:true,pricing_mode:'driver_offers'};
+const notice=(s,bad=false)=>{$('notice').textContent=s;$('notice').className='status '+(bad?'bad':'')};
+const msg=(id,s,bad=false)=>{const e=$(id);if(e){e.textContent=s;e.className='status '+(bad?'bad':'')}};
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money=n=>Number(n||0).toLocaleString('en-SA',{style:'currency',currency:'SAR'});
+async function call(q){const {data,error}=await q;if(error)throw error;return data}
+function showAuth(){ $('auth').classList.remove('hidden');$('app').classList.add('hidden');$('logout').classList.add('hidden');}
+async function boot(){
+ if(!window.supabase||!cfg.url||!cfg.anonKey||cfg.url.includes('PASTE_')){notice('Setup required: config.js میں Supabase Project URL اور Publishable/anon key درج کریں۔',true);showAuth();return}
+ sb=window.supabase.createClient(cfg.url,cfg.anonKey);
+ const {data:{session}}=await sb.auth.getSession();if(session)await enter(session.user);else{notice('Please sign in with your email.');showAuth()}
+ sb.auth.onAuthStateChange((_event,session)=>{if(!session){user=null;profile=null;showAuth()}});
+}
+$('sendOtp').onclick=async()=>{try{const email=$('email').value.trim();if(!email)throw Error('ای میل درج کریں');msg('authMsg','OTP بھیجا جا رہا ہے…');const {error}=await sb.auth.signInWithOtp({email,options:{shouldCreateUser:true,emailRedirectTo:undefined}});if(error)throw error;msg('authMsg','OTP بھیج دیا گیا۔ Inbox اور Spam دونوں چیک کریں۔')}catch(e){msg('authMsg',e.message,true)}};
+$('verifyOtp').onclick=async()=>{try{const email=$('email').value.trim(),token=$('otp').value.trim();const {data,error}=await sb.auth.verifyOtp({email,token,type:'email'});if(error)throw error;await enter(data.user)}catch(e){msg('authMsg',e.message,true)}};
+$('logout').onclick=async()=>{await sb.auth.signOut();showAuth();notice('آپ سائن آؤٹ ہو گئے ہیں۔')};
+async function enter(u){
+ user=u;
+ try{profile=await call(sb.from('vip_profiles').select('*').eq('id',u.id).single());}
+ catch(e){throw e}
+ await loadSettings();$('auth').classList.add('hidden');$('app').classList.remove('hidden');$('logout').classList.remove('hidden');
+ $('welcome').textContent=profile.full_name||u.email;$('rolePill').textContent=profile.role||'customer';notice('آپ لاگ اِن ہیں۔');
+ buildTabs();render();
+}
+async function loadSettings(){try{const d=await call(sb.from('vip_settings').select('*').eq('id',1).single());settings=d||settings}catch(e){}}
+function buildTabs(){
+ const tabs=profile.role==='admin'?[['home','Dashboard'],['bookings','Bookings'],['drivers','Drivers'],['settings','Settings']]:
+ profile.role==='driver'?[['home','Driver'],['jobs','Open requests'],['myoffers','My offers'],['chat','Chat']]:
+ [['home','Book transfer'],['mybookings','My bookings'],['apply','Become a driver'],['chat','Chat']];
+ $('tabs').innerHTML=tabs.map(([id,t])=>`<button class="${active===id?'active':''}" data-tab="${id}">${t}</button>`).join('');
+ $('tabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{active=b.dataset.tab;buildTabs();render()});
+}
+const box=(title,body)=>`<section class="card"><h2>${title}</h2>${body}</section>`;
+async function render(){try{
+ const v=$('view');v.innerHTML='<div class="card">Loading…</div>';
+ if(active==='home'&&profile.role==='customer')v.innerHTML=customerHome();
+ else if(active==='home'&&profile.role==='driver')v.innerHTML=driverHome();
+ else if(active==='home'&&profile.role==='admin')v.innerHTML=await adminHome();
+ else if(active==='mybookings')v.innerHTML=await myBookings();
+ else if(active==='apply')v.innerHTML=await driverApply();
+ else if(active==='jobs')v.innerHTML=await jobs();
+ else if(active==='myoffers')v.innerHTML=await myOffers();
+ else if(active==='bookings')v.innerHTML=await adminBookings();
+ else if(active==='drivers')v.innerHTML=await adminDrivers();
+ else if(active==='settings')v.innerHTML=settingsView();
+ else if(active==='chat')v.innerHTML=await chatView();
+ wire();
+ }catch(e){$('view').innerHTML=`<div class="card bad">${esc(e.message)}<p class="small">اگر یہ ڈیٹابیس اجازت (RLS) کا مسئلہ ہو تو SQL patch اور Supabase policies چیک کرنا ہوگا۔</p></div>`}
+}
+function customerHome(){return box('Book a VIP transfer',`<form id="bookingForm"><div class="grid"><label>Pickup location<input name="pickup" required placeholder="Airport / hotel / address"></label><label>Destination<input name="destination" required placeholder="Where to?"></label><label>Pickup date & time<input name="pickup_at" type="datetime-local"></label><label>Vehicle category<select name="category"><option>Comfort</option><option>Business</option><option>VIP</option></select></label><label>Passengers<input name="passengers" type="number" min="1" max="20" value="1"></label></div><label>Notes<textarea name="notes" placeholder="Extra instructions (optional)"></textarea></label><button>Create booking request</button></form>`)}
+function driverHome(){return box('Driver workspace',`<p>آپ کا ڈرائیور اکاؤنٹ فعال ہے۔ نئی درخواستیں دیکھیں اور اپنی قیمت بھیجیں۔</p><p class="muted">کسٹمر کو آپ کا فون نمبر نہیں دکھایا جائے گا۔</p><button data-go="jobs">Open requests</button>`)}
+async function adminHome(){const [b,d]=await Promise.all([call(sb.from('vip_bookings').select('id',{count:'exact',head:true})),call(sb.from('vip_driver_applications').select('id',{count:'exact',head:true}))]);return box('Admin dashboard',`<div class="grid"><div class="item"><div class="muted">Bookings</div><h2>${b?.length??'—'}</h2></div><div class="item"><div class="muted">Driver applications</div><h2>${d?.length??'—'}</h2></div></div><p>یہاں سے ڈرائیور، بکنگ اور آفرز کنٹرول کریں۔</p>`)}
+async function myBookings(){const rows=await call(sb.from('vip_bookings').select('*,vip_offers(id,price_sar,status,driver_id,vehicle_id,vip_vehicles(category,model,plate))').eq('customer_id',user.id).order('created_at',{ascending:false}));return box('My bookings',rows.length?rows.map(b=>`<div class="item"><h3>${esc(b.pickup)} → ${esc(b.destination)}</h3><p class="muted">${esc(b.pickup_at||'Time not set')} · ${esc(b.status)}</p>${(b.vip_offers||[]).map(o=>`<div class="item"><b>${money(o.price_sar)}</b> · ${esc(o.vip_vehicles?.category||'Vehicle')} ${esc(o.vip_vehicles?.model||'')} · ${esc(o.vip_vehicles?.plate||'Plate not added')} <span class="pill">${esc(o.status)}</span>${o.status==='pending'?`<button data-accept="${o.id}">Accept offer</button>`:''}</div>`).join('')||'<p class="muted">ابھی کوئی آفر موصول نہیں ہوئی۔</p>'}</div>`).join(''):'<p>ابھی کوئی بکنگ نہیں۔</p>')}
+async function driverApply(){const app=await call(sb.from('vip_driver_applications').select('*').eq('driver_id',user.id).maybeSingle());if(app)return box('Driver application',`<p>Status: <b>${esc(app.status)}</b></p><p>${esc(app.vehicle_model)} · ${esc(app.vehicle_plate||'')}</p><p class="muted">Admin review کے بعد ڈرائیور اکاؤنٹ فعال ہوگا۔`);return box('Driver application',`<form id="applyForm"><div class="grid"><label>Vehicle category<select name="vehicle_category"><option>Comfort</option><option>Business</option><option>VIP</option></select></label><label>Vehicle model<input name="vehicle_model" required placeholder="Toyota Camry"></label><label>Year<input name="vehicle_year" type="number" min="1990" max="2035"></label><label>Vehicle plate<input name="vehicle_plate" placeholder="Vehicle plate number"></label><label>Vehicle photo URL<input name="vehicle_photo_url" placeholder="Optional image link"></label></div><label>Notes<textarea name="notes"></textarea></label><button>Submit application</button></form>`)}
+async function jobs(){const rows=await call(sb.from('vip_bookings').select('*').eq('status','open').order('created_at',{ascending:false}));return box('Open customer requests',rows.length?rows.map(b=>`<div class="item"><h3>${esc(b.pickup)} → ${esc(b.destination)}</h3><p>${esc(b.category)} · ${esc(b.passengers)} passengers · ${esc(b.pickup_at||'Flexible')}</p><p class="muted">${esc(b.notes||'')}</p><label>Your offer (SAR)<input type="number" min="1" step=".01" id="price-${b.id}" placeholder="Price in SAR"></label><button data-offer="${b.id}">Send offer</button></div>`).join(''):'<p>فی الحال کوئی کھلی درخواست نہیں۔')}
+async function myOffers(){const rows=await call(sb.from('vip_offers').select('*,vip_bookings(pickup,destination,status)').eq('driver_id',user.id).order('created_at',{ascending:false}));return box('My offers',rows.length?rows.map(o=>`<div class="item">${esc(o.vip_bookings?.pickup)} → ${esc(o.vip_bookings?.destination)}<p class="price">${money(o.price_sar)}</p><span class="pill">${esc(o.status)}</span></div>`).join(''):'<p>آپ نے ابھی کوئی آفر نہیں بھیجی۔')}
+async function adminBookings(){const rows=await call(sb.from('vip_bookings').select('*').order('created_at',{ascending:false}));return box('All bookings',rows.length?rows.map(b=>`<div class="item"><b>${esc(b.pickup)} → ${esc(b.destination)}</b><p>${esc(b.status)} · ${esc(b.category)} · ${esc(b.passengers)} passengers</p><p class="small">Customer ID: ${esc(b.customer_id)}</p></div>`).join(''):'<p>No bookings yet.</p>')}
+async function adminDrivers(){const rows=await call(sb.from('vip_driver_applications').select('*,vip_profiles(email,full_name,role)').order('created_at',{ascending:false}));return box('Driver applications',rows.length?rows.map(a=>`<div class="item"><h3>${esc(a.vehicle_model)} · ${esc(a.vehicle_category)}</h3><p>${esc(a.vip_profiles?.full_name)} · ${esc(a.vip_profiles?.email)}</p><p>Plate: ${esc(a.vehicle_plate||'—')} · Status: ${esc(a.status)}</p><div class="row"><button data-driver="${a.driver_id}" data-status="approved">Approve</button><button class="danger" data-driver="${a.driver_id}" data-status="disabled">Disable</button></div></div>`).join(''):'<p>No driver applications.</p>')}
+function settingsView(){return box('App settings',`<label><input id="offersToggle" type="checkbox" style="width:auto" ${settings.offers_enabled?'checked':''}> Allow drivers to send offers</label><label>Pricing mode<select id="pricingMode"><option value="driver_offers">Driver offers</option><option value="admin_fixed">Admin fixed price</option><option value="both">Both</option></select></label><button id="saveSettings">Save settings</button>`)}
+async function chatView(){const rows=await call(sb.from('vip_messages').select('*').order('created_at',{ascending:true}).limit(100));return box('In-app messages',`<p class="muted">پیغام صرف بکنگ کے متعلقہ افراد کو نظر آتے ہیں۔</p><div class="chatlog">${rows.map(m=>`<div class="msg"><b>${m.sender_id===user.id?'You':'Participant'}</b><br>${esc(m.body)}</div>`).join('')||'No messages yet.'}</div><p class="small">Chat میں بکنگ ID درج کرکے پیغام بھیجیں۔</p><label>Booking ID<input id="chatBooking" placeholder="UUID of accepted booking"></label><label>Message<textarea id="chatBody"></textarea></label><button id="sendMessage">Send message</button>`)}
+function wire(){
+ const f=$('bookingForm');if(f)f.onsubmit=async e=>{e.preventDefault();try{const d=Object.fromEntries(new FormData(f));await call(sb.from('vip_bookings').insert({customer_id:user.id,pickup:d.pickup,destination:d.destination,pickup_at:d.pickup_at?new Date(d.pickup_at).toISOString():null,category:d.category,passengers:Number(d.passengers),notes:d.notes||null}));notice('Booking request created.');active='mybookings';buildTabs();render()}catch(x){notice(x.message,true)}};
+ const af=$('applyForm');if(af)af.onsubmit=async e=>{e.preventDefault();try{const d=Object.fromEntries(new FormData(af));await call(sb.from('vip_driver_applications').insert({driver_id:user.id,vehicle_category:d.vehicle_category,vehicle_model:d.vehicle_model,vehicle_year:d.vehicle_year?Number(d.vehicle_year):null,vehicle_plate:d.vehicle_plate||null,vehicle_photo_url:d.vehicle_photo_url||null,notes:d.notes||null,status:'pending'}));notice('Application submitted.');render()}catch(x){notice(x.message,true)}};
+ document.querySelectorAll('[data-offer]').forEach(b=>b.onclick=async()=>{try{if(!settings.offers_enabled)throw Error('Driver offers are currently disabled by admin');const booking=b.dataset.offer,price=Number($('price-'+booking).value);if(!(price>0))throw Error('Valid price enter کریں');const vehicle=await call(sb.from('vip_vehicles').select('id').eq('driver_id',user.id).maybeSingle());let vehicleId=vehicle?.id;if(!vehicleId){const app=await call(sb.from('vip_driver_applications').select('*').eq('driver_id',user.id).single());const v=await call(sb.from('vip_vehicles').insert({driver_id:user.id,category:app.vehicle_category,model:app.vehicle_model,plate:app.vehicle_plate,photo_url:app.vehicle_photo_url}).select('id').single());vehicleId=v.id}await call(sb.from('vip_offers').insert({booking_id:booking,driver_id:user.id,vehicle_id:vehicleId,price_sar:price}));notice('Offer sent.');render()}catch(x){notice(x.message,true)}});
+ document.querySelectorAll('[data-accept]').forEach(b=>b.onclick=async()=>{try{await call(sb.rpc('vip_accept_offer',{p_offer_id:b.dataset.accept}));notice('Offer accepted.');render()}catch(x){notice(x.message,true)}});
+ document.querySelectorAll('[data-driver]').forEach(b=>b.onclick=async()=>{try{await call(sb.rpc('vip_admin_set_driver_status',{p_driver_id:b.dataset.driver,p_status:b.dataset.status}));notice('Driver status updated.');render()}catch(x){notice('Approval function unavailable: '+x.message,true)}});
+ document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{active=b.dataset.go;buildTabs();render()});
+ if($('pricingMode'))$('pricingMode').value=settings.pricing_mode;
+ if($('saveSettings'))$('saveSettings').onclick=async()=>{try{await call(sb.from('vip_settings').update({offers_enabled:$('offersToggle').checked,pricing_mode:$('pricingMode').value}).eq('id',1));await loadSettings();notice('Settings saved.')}catch(x){notice(x.message,true)}};
+ if($('sendMessage'))$('sendMessage').onclick=async()=>{try{await call(sb.from('vip_messages').insert({booking_id:$('chatBooking').value.trim(),sender_id:user.id,body:$('chatBody').value.trim()}));notice('Message sent.');render()}catch(x){notice(x.message,true)}};
+}
+boot().catch(e=>{notice(e.message,true);showAuth()});
 })();
-</script>
-</body></html>
+</script></body></html>
