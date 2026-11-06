@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#ffffff">
+<title>Transfer — Professional Service</title>
+<style>
+:root{--bg:#0b1118;--panel:#141e29;--panel2:#1b2937;--gold:#f4bd55;--text:#f4f6f8;--muted:#9eacba;--line:#2b3a49;--green:#39c98a;--red:#f07171}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
+header{position:relative;padding:22px 18px 18px 68px;background:linear-gradient(135deg,#101820,#1b2a38);border-bottom:1px solid var(--line);text-align:center;min-height:88px}
+.logo{display:none}.road{display:none}
+.tag{color:var(--gold);font-size:14px;font-weight:700;letter-spacing:.6px}
+.wrap{max-width:760px;margin:auto;padding:16px 14px 92px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:15px;margin:13px 0}
+h2{font-size:16px;margin:0 0 12px}h3{font-size:14px;margin:0 0 9px;color:var(--gold)}
+.small{font-size:12px;color:var(--muted);line-height:1.5}
+.row{display:flex;gap:7px;overflow-x:auto;padding:2px 0 7px;scrollbar-width:thin}
+.chip,button{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:10px;padding:10px 12px;font-weight:700;font-size:12px;white-space:nowrap;cursor:pointer}
+.chip.active,button.primary{background:var(--gold);border-color:var(--gold);color:#18202a}
+#urgentRideBtn{background:#ffe9a6;border-color:#ffe9a6;color:#242424;font-weight:900;box-shadow:0 0 0 2px rgba(255,233,166,.12)}
+.category-title{font-size:12px;color:var(--muted);margin:10px 0 5px}
+#vehicles .chip,#categories .chip{padding:6px 8px;font-size:10px;border-radius:8px;min-height:30px}
+#vehicles.row,#categories.row{gap:5px;padding:1px 0 5px}
+.urgent-mark{position:absolute;left:12px;top:14px;display:flex;align-items:center;justify-content:center;margin:0;color:#e0a21a;font-weight:900;font-size:12px;letter-spacing:1px}
+.urgent-mark svg{width:43px;height:43px;display:block}
+.later-booking-btn{background:#eadff3!important;border-color:#eadff3!important;color:#292333!important;font-weight:800!important}
+.booking-shortcuts{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:0 0 12px}
+.service-line{display:flex;flex-wrap:wrap;align-items:center;gap:5px 6px;padding:3px 0 8px;font-size:11px;color:var(--muted);line-height:1.7}
+.service-option{cursor:pointer;white-space:nowrap;border-bottom:1px dotted #8b7447;padding:0 1px}
+.service-option.active{color:var(--gold);font-weight:800;border-bottom:2px solid var(--gold)}
+.booking-shortcuts button{flex:1;min-width:0;padding:5px 8px;font-size:10px;line-height:1.1;border-radius:7px;min-height:25px}
+.help-line{display:block;text-align:center;text-decoration:none;margin-top:9px;padding:12px;border:1px solid var(--gold);border-radius:10px;color:var(--gold);font-weight:800}
+button{font-size:13px}button:disabled{opacity:.45;cursor:not-allowed}
+input,select,textarea{width:100%;padding:9px 10px;border-radius:9px;border:1px solid var(--line);background:#0d151e;color:var(--text);margin:4px 0 7px;font-size:13px;min-height:38px}
+label{font-size:11px;color:var(--muted);display:block;margin-top:4px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}.grid .full{grid-column:1/-1}
+.actions{display:flex;gap:8px;flex-wrap:wrap}.actions button{flex:1}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#101820;border-top:1px solid var(--line);display:flex;justify-content:center;gap:4px;padding:8px 5px calc(8px + env(safe-area-inset-bottom));z-index:5}
+.nav button{flex:1;max-width:150px;padding:10px 4px;font-size:11px}
+.book-your-car-label{position:fixed;left:7px;bottom:108px;z-index:6;color:var(--gold);font-size:11px;font-weight:800;letter-spacing:.3px;background:#101820d9;padding:4px 7px;border-radius:7px}
+.nav button.active-nav{border-color:var(--gold);color:var(--gold)}
+.nav-book-label{display:block;line-height:1.1}
+.notification-float{position:fixed;right:14px;bottom:76px;z-index:7;border:1px solid #d6b45b;background:#fff3c4;color:#3b321d;border-radius:22px;padding:8px 13px;font-size:12px;font-weight:800;box-shadow:0 2px 10px rgba(20,35,50,.16)}
+.notification-panel{position:fixed;right:12px;bottom:120px;z-index:8;width:min(290px,calc(100vw - 24px));padding:12px;background:#fff;border:1px solid #d9e0e8;border-radius:12px;box-shadow:0 5px 20px rgba(20,35,50,.18);color:#202833}
+.notification-panel h3{margin:0 0 7px;color:#9b6a0c;font-size:13px}
+.notification-panel p{margin:0;font-size:12px;line-height:1.5;color:#657180}
+.page{display:none}.page.active{display:block}
+.notice{padding:10px;border-radius:10px;background:#172b27;color:#a9f0d0;font-size:12px;margin:8px 0}
+.warning{background:#30271b;color:#f7d99f}
+.item{border:1px solid var(--line);background:#101923;padding:12px;border-radius:12px;margin:8px 0}
+.price{font-size:20px;color:var(--gold);font-weight:800}
+.badge{font-size:10px;padding:4px 7px;border-radius:20px;background:#26384a;color:#c7d6e4}
+#selectionDetails{padding:9px 11px;margin:8px 0 0;border-color:#70572c}#selectionDetails h3{margin-bottom:5px;font-size:12px}
+.selection-panel{padding:9px 11px;margin:6px 0 9px;border-color:#70572c}.selection-panel h3{margin-bottom:4px;font-size:12px}.hidden{display:none!important}
+@media(min-width:620px){.wrap{padding-top:24px}.grid.three{grid-template-columns:repeat(3,1fr)}}
+
+/* Compact controls: keep the home screen light and uncluttered */
+#vehicles .chip,#categories .chip{padding:3px 6px;font-size:9px;min-height:22px;border-radius:6px}
+#vehicles.row,#categories.row{gap:3px;padding:1px 0 3px}
+#cityExamples{font-size:10px;line-height:1.3;color:var(--muted)}
+.selection-panel{padding:7px 9px;margin:5px 0 7px}
+#selectionSummary{padding:7px 9px;margin:6px 0;font-size:10px}
+
+
+
+/* Version 3: clean white screen and clearly separated booking buttons */
+:root{--bg:#f5f7fa;--panel:#ffffff;--panel2:#f0f3f7;--gold:#c18a20;--text:#202833;--muted:#657180;--line:#d9e0e8;--green:#16875b;--red:#c94b4b}
+body{background:var(--bg);color:var(--text)}
+header{background:#ffffff;border-bottom:1px solid var(--line);box-shadow:0 2px 10px rgba(25,40,55,.05)}
+.urgent-mark svg circle{fill:#ffffff}
+.tag{color:#a87512}
+.card{background:#ffffff;border-color:#e0e5eb;box-shadow:0 3px 14px rgba(30,45,60,.045)}
+.chip,button{background:#f1f4f7;color:#25313d;border-color:#d6dee7}
+.chip.active,button.primary{background:#e5b84e;border-color:#d5a437;color:#202833}
+#urgentRideBtn{background:#ffe9a6;border-color:#e7c96d;color:#242424}
+input,select,textarea{background:#ffffff;color:#202833;border-color:#d2dbe5}
+.nav{background:#ffffff;border-top:1px solid #d9e0e8;box-shadow:0 -2px 12px rgba(25,40,55,.06)}
+.nav button.active-nav{border-color:#c18a20;color:#9b6a0c}
+.item{background:#f8fafc;border-color:#dce3eb}
+.notice{background:#e8f6ef;color:#176b49}
+.warning{background:#fff4df;color:#815b17}
+.badge{background:#e9eff5;color:#40566b}
+.later-booking-btn{background:#f0e9f7!important;border-color:#d9c9e8!important;color:#453453!important}
+.booking-shortcuts{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;max-width:560px;margin:0 auto 14px;padding:0 4px}
+.booking-shortcuts button{min-width:0;min-height:34px;padding:6px 4px;font-size:10px;line-height:1.2;white-space:normal;border-radius:8px;box-shadow:0 1px 3px rgba(20,35,50,.06)}
+#bookingModeHint{text-align:center}
+.book-your-car-label{background:#ffffffd9;color:#9b6a0c}
+@media(max-width:360px){.booking-shortcuts{gap:8px}.booking-shortcuts button{font-size:9px;padding:5px 2px}}
+/* Version 4: booking choices at the top, followed by a single-line callout */
+.booking-top-card{padding:12px 10px;margin-top:0;margin-bottom:12px}
+.booking-top-card .booking-shortcuts{margin:0 auto 8px;gap:9px;max-width:600px;padding:0}
+.booking-top-card .booking-shortcuts button{min-height:32px;padding:5px 3px;font-size:10px;white-space:nowrap}
+.book-anywhere-line{margin:5px 0 3px;text-align:center;font-size:14px;font-weight:800;color:#9b6a0c;white-space:nowrap;line-height:1.25}
+.booking-top-card #bookingModeHint{margin:3px 0 0;text-align:center;font-size:10px}
+@media(max-width:360px){.booking-top-card .booking-shortcuts{gap:5px}.booking-top-card .booking-shortcuts button{font-size:9px;padding:5px 2px}.book-anywhere-line{font-size:13px}}
+
+
+/* Version 5: pale-yellow booking buttons and clearer driver price-offer controls */
+.booking-top-card .booking-shortcuts button{
+  background:#fff3c4!important;
+  border-color:#efd98a!important;
+  color:#3b321d!important;
+  font-size:10px!important;
+  font-weight:800!important;
+  padding:6px 3px!important;
+  min-height:38px!important;
+  line-height:1.2!important;
+  white-space:normal!important;
+  overflow-wrap:anywhere;
+  text-align:center;
+}
+.booking-top-card .booking-shortcuts button.primary,
+.booking-top-card .booking-shortcuts button.later-booking-btn{
+  background:#fff3c4!important;
+  border-color:#efd98a!important;
+  color:#3b321d!important;
+}
+#driverRides label{color:#596675;font-weight:700;font-size:12px;margin-top:8px}
+#driverRides input,#driverRides select{background:#fff;color:#202833;border:1px solid #d2b95f;min-height:40px}
+#driverRides button{display:block;width:100%;margin-top:9px;padding:10px 8px;min-height:40px;white-space:normal;line-height:1.25;background:#fff3c4;border:1px solid #efd98a;color:#3b321d;font-weight:800}
+@media(max-width:360px){.booking-top-card .booking-shortcuts{gap:5px}.booking-top-card .booking-shortcuts button{font-size:9px!important;padding:6px 2px!important}}
+
+</style>
+</head>
+<body>
+<header>
+  <div class="urgent-mark"><svg viewBox="0 0 100 100" role="img" aria-label="Transfer T round logo">
+    <circle cx="50" cy="50" r="46" fill="#ffffff" stroke="#d99a12" stroke-width="4.5"/>
+    <circle cx="50" cy="50" r="39" fill="none" stroke="#f2bd32" stroke-width="1.8"/>
+    <path d="M27 31 H73 V43 H57 V76 H43 V43 H27 Z" fill="#f0a900" stroke="#b97800" stroke-width="1.2" stroke-linejoin="round"/>
+  </svg></div>
+  <div class="logo" style="display:block;font-size:22px;letter-spacing:2px;margin:0 0 5px">TRANSFER</div>
+  <div class="tag" style="font-size:17px;white-space:nowrap">Your Ride, Your Price</div>
+  <div class="tag" style="font-size:13px;margin-top:4px">Professional Service</div>
+</header>
+<main class="wrap">
+  <section id="home" class="page active">
+    <div class="card booking-top-card">
+      <div class="booking-price-box" style="margin:0 auto 9px;max-width:600px;padding:7px 9px;border:1px solid #efd98a;border-radius:8px;background:#fff9e8;text-align:center">
+        <div style="font-size:11px;font-weight:800;color:#3b321d;margin-bottom:5px">Your Booking Price</div>
+        <button type="button" style="width:100%;height:30px;min-height:30px;padding:5px 8px;margin:0 0 5px;background:#fff3c4;border:1px solid #efd98a;color:#3b321d;font-size:10px;font-weight:800;border-radius:8px">View Driver Price Offers</button>
+      </div>
+      <div class="booking-shortcuts">
+        <button class="primary" type="button" onclick="selectBookingMode('Local Ride')">Local Ride</button>
+        <button type="button" onclick="selectBookingMode('Airport Transfer')">Airport Transfer</button>
+        <button class="later-booking-btn" type="button" onclick="selectBookingMode('Advance Booking')">Advance Booking</button>
+      </div>
+      <p class="book-anywhere-line">Book car from anywhere.</p>
+      <p class="small" id="bookingModeHint">Choose Local Ride, Airport Transfer or Advance Booking.</p>
+    </div>
+    <div class="card">
+      <h2>Choose Your Vehicle</h2>
+      <div class="row" id="vehicles">
+        <button class="chip active" data-vehicle="GMC">GMC</button>
+        <button class="chip" data-vehicle="Lexus">Lexus</button>
+        <button class="chip" data-vehicle="Ford Taurus">Ford Taurus</button>
+        <button class="chip" data-vehicle="Camry">Camry</button>
+        <button class="chip" data-vehicle="Sonata">Sonata</button>
+      </div>
+      <div class="category-title">More Cars · Choose Category</div>
+      <div class="row" id="categories">
+        <button class="chip" data-category="Luxury SUV">Luxury SUV</button>
+        <button class="chip" data-category="Business Sedan">Business Sedan</button>
+        <button class="chip" data-category="Economy / Small Car">Economy / Small Car</button>
+        <button class="chip" data-category="Go">Go</button>
+      </div>
+      <div id="vehicleDetailsPanel" class="item selection-panel" aria-live="polite"><h3 id="vehicleDetailsTitle">GMC</h3><div class="small" id="vehicleDetailsText">Spacious premium SUV, suitable for family trips, airport transfers and extra luggage.</div></div>
+      <p class="small" id="categoryNote">Choose a vehicle category.</p>
+      <div id="categoryDetailsPanel" class="item selection-panel" aria-live="polite"><h3 id="categoryDetailsTitle">Luxury SUV</h3><div class="small" id="categoryDetailsText">Premium SUV category with extra space and luggage capacity.</div></div>
+      <h2 style="margin-top:12px">Ride Services</h2>
+      <div id="durations" class="service-line" aria-label="Choose ride service">
+        <span class="service-option active" data-duration="One Way">One Way</span><span>·</span>
+        <span class="service-option" data-duration="Two Way">Two Way</span><span>·</span>
+        <span class="service-option" data-duration="Hourly">Hourly</span><span>·</span>
+        <span class="service-option" data-duration="8 Hours">8 Hour Service</span><span>·</span>
+        <span class="service-option" data-duration="12 Hours">Full Day Service</span><span>·</span>
+        <span class="service-option" data-duration="City to City">City to City</span>
+      </div>
+      <div class="small" id="cityExamples" style="margin:0 0 7px">Riyadh → Dammam · Riyadh → Al Qassim · More cities</div>
+      <div id="durationDetailsPanel" class="item selection-panel" aria-live="polite">
+        <h3 id="durationDetailsTitle">One Way</h3>
+        <div class="small" id="durationDetailsText">Single trip from pickup to destination.</div>
+      </div>
+      <div class="notice" id="selectionSummary">Selected: GMC · Luxury SUV · One Way</div>
+    </div>
+    <div class="card">
+      <div id="bookingForm" class="hidden">
+      <h2>Booking</h2>
+      <div class="grid">
+        <div class="full"><label>Pickup Location</label><input id="pickup" placeholder="Enter pickup location"></div>
+        <div class="full"><label>Destination</label><input id="destination" placeholder="Enter destination"></div>
+        <div><label>Pickup Date</label><input id="rideDate" type="date"></div>
+        <div><label>Pickup Time</label><input id="rideTime" type="time"></div>
+        <div><label>Passengers</label><select id="passengers"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option></select></div>
+        <div><label>Ride Type</label><input id="rideTypeDisplay" value="One Way" readonly></div>
+        <div class="full"><label>Selected Vehicle / Category</label><input id="vehicleDisplay" value="GMC · Luxury SUV" readonly></div>
+      </div>
+      <div class="grid">
+        
+        <div><label>Additional Instructions</label><input id="instructions" placeholder="Optional note"></div>
+      </div>
+      <p class="small" id="pricingInfo">Driver sends the price offer first. The customer can compare offers and choose. Admin can switch anytime between Driver Offers and Fixed Price.</p>
+      <button class="primary" type="button" style="width:100%;margin-top:8px" onclick="createRide(false)">Submit Booking</button>
+      </div>
+      <div id="laterForm" class="hidden" style="margin-top:12px">
+        <h2>Later Booking</h2>
+        <p class="small">Schedule a ride for a future date and time. Your request will be sent to available drivers.</p>
+        <label>Pickup Location</label><input id="laterPickup" placeholder="Enter pickup location">
+        <label>Destination</label><input id="laterDestination" placeholder="Enter destination">
+        <div class="grid"><div><label>Date</label><input id="laterDate" type="date"></div><div><label>Time</label><input id="laterTime" type="time"></div></div>
+        <label>Preferred Vehicle</label><select id="laterVehicle"><option>GMC</option><option>Lexus</option><option>Ford</option><option>Taurus</option><option>Camry</option><option>Sonata</option><option>Economy / Small Car</option><option>Go</option></select>
+        <button class="primary" style="width:100%" onclick="createRide(true)">Send Later Booking Request</button>
+      </div>
+    </div>
+    <div class="card" style="padding:9px 12px">
+      <input id="referralCode" type="text" placeholder="Referral Code (optional)" aria-label="Optional Referral Code" autocomplete="off" style="width:100%;height:34px;min-height:34px;margin:0;padding:7px 9px;font-size:12px">
+    </div>
+    <div class="card">
+      <h2>How It Works</h2>
+      <div class="small">1. Enter your trip details.<br>2. Nearby drivers receive your request.<br>3. Drivers send price offers.<br>4. Compare offers and choose your driver.<br>5. Chat in the app and manage your ride.</div>
+    </div>
+  </section>
+
+  <section id="rides" class="page">
+    <div class="card"><h2>My Rides</h2><div class="actions"><button onclick="setRole('Customer')" title="Show customer bookings and received driver offers">Customer View</button><button onclick="setRole('Driver')" title="View requests and send a driver price offer">Driver View</button></div><p class="small">Current mode: <b id="roleLabel">Customer</b>. This switch is for preview/testing.</p></div>
+    <div id="customerRides"></div><div id="driverRides"></div>
+  </section>
+
+  <section id="chat" class="page">
+    <div class="card"><h2>Ride Chat</h2><p class="small">In-app messaging preview. A live multi-user chat requires a connected backend.</p><div id="chatMessages" class="item small">No messages yet.</div><label>Message</label><input id="chatInput" placeholder="Type a message"><button class="primary" style="width:100%" onclick="sendChat()" title="Add a test message to this device preview">Send Message</button></div>
+  </section>
+
+  <section id="account" class="page">
+    <div class="card"><h2>Account & Verification</h2><label>Full Name</label><input id="fullName" placeholder="Enter your name"><label>Email Address</label><input id="email" type="email" placeholder="name@example.com"><label>Mobile Number</label><input id="mobile" type="tel" placeholder="Enter mobile number"><button class="primary" style="width:100%" onclick="saveAccount()" title="Save your profile details on this device">Save Account Details</button><div id="accountStatus" class="small" role="status" style="margin-top:8px"></div>
+      <hr style="border-color:var(--line);margin:16px 0">
+      <h3>Admin Pricing Control</h3>
+      <p class="small">Admin can change the pricing method at any time. This prototype saves the setting on this device.</p>
+      <label>Pricing Method</label>
+      <select id="pricingMode"><option value="offers">Driver Offers (driver offers first)</option><option value="fixed">Fixed Price (admin sets price)</option></select>
+      <label>Fixed Ride Price (SAR)</label><input id="fixedPrice" type="number" min="1" placeholder="Enter fixed price in SAR">
+      <button class="primary" style="width:100%" onclick="savePricingSettings()" title="Choose driver offers or admin fixed price">Save Pricing Settings</button>
+      <div id="pricingStatus" class="small" role="status" style="margin-top:8px"></div>
+      <hr style="border-color:var(--line);margin:16px 0">
+      <h3>Referral Code Records</h3>
+      <p class="small">Bookings that include a referral code are listed here with the customer details saved on this device.</p>
+      <div id="referralRecords" class="small">No referral bookings recorded yet.</div>
+      <div class="notice warning">Demo limitation: these records are stored only in this browser/device. To collect referral records centrally from all customers and drivers, a secure shared backend/database must be connected.</div>
+      <hr style="border-color:var(--line);margin:16px 0">
+      <h3>Email OTP Verification</h3><p class="small">Enter your email address to request a verification code. Check your Spam or Junk folder if the email does not arrive.</p>
+      <button style="width:100%" onclick="requestOtp()">Request Email OTP</button>
+      <label>Enter OTP</label><input id="otpInput" inputmode="numeric" maxlength="6" placeholder="6-digit code">
+      <button class="primary" style="width:100%" onclick="verifyOtp()">Verify OTP</button>
+      <div id="otpStatus" class="small" style="margin-top:8px"></div>
+      <div class="notice warning">Demo preview only: email OTP delivery is not connected. A secure backend and email provider must be configured before real user verification. WhatsApp OTP is not included.</div>
+    </div>
+  </section>
+
+  <section id="support" class="page">
+    <div class="card"><h2>Help & Support</h2><p class="small">How can we help you?</p>
+      <label>Support Topic</label><select id="supportTopic"><option>Booking Support</option><option>Payment or Price Offer</option><option>Driver Support</option><option>Account & Verification</option><option>Technical Issue</option><option>Other</option></select>
+      <label>Describe Your Issue</label><textarea id="supportText" rows="4" placeholder="Write your message"></textarea>
+      <button class="primary" style="width:100%" onclick="supportRequest()" title="Preview submitting a support request">Submit Support Request</button><a class="help-line" href="mailto:limuzin@196vip.si?subject=Transfer%20Help%20Line">Help Line · Email Support<br><span style="font-size:12px;font-weight:600">limuzin@196vip.si</span></a><div id="supportStatus" class="small"></div>
+    </div>
+  </section>
+</main>
+
+<nav class="nav">
+  <button class="primary active-nav" data-page="home" onclick="showPage('home')"><span class="nav-book-label">Book</span></button>
+  <button data-page="rides" onclick="showPage('rides')">Rides</button>
+  <button data-page="chat" onclick="showPage('chat')">Chat</button>
+  <button data-page="account" onclick="showPage('account')">Account</button>
+  <button data-page="support" onclick="showPage('support')">Support</button>
+</nav>
+<button class="notification-float" type="button" aria-label="Notifications" aria-expanded="false" onclick="toggleNotifications()">🔔 Notifications</button>
+<div id="notificationPanel" class="notification-panel hidden" role="status" aria-live="polite">
+  <h3>🔔 Notifications</h3>
+  <p id="notificationMessage">Your ride updates and new offers will appear here while you are using the app.</p>
+</div>
+<script>
+let selectedVehicle='GMC',selectedCategory='Luxury SUV',selectedDuration='One Way',role='Customer',rides=JSON.parse(localStorage.getItem('urgentRideRides')||'[]'),messages=[];
+let pricingSettings=JSON.parse(localStorage.getItem('urgentRidePricing')||'{"mode":"offers","fixedPrice":0}');
+let demoOtp=null;
+const vehicleDetails={'Ford Taurus':'Business-class sedan, suitable for executive city rides and airport transfers.',GMC:'Spacious premium SUV, suitable for family trips, airport transfers and extra luggage.',Lexus:'Luxury comfort sedan/SUV option for executive and premium city travel.',Ford:'Comfortable family and city travel option.',Taurus:'Business-class sedan for comfortable city and airport rides.',Camry:'Practical and comfortable sedan for everyday city transfers.',Sonata:'Comfortable sedan option for city trips and airport transfers.'};
+const categoryDetails={'Luxury SUV':'SUV choices: GMC and Lexus. Drivers can offer a price for the selected SUV.','Business Sedan':'Sedan choices: Ford Taurus, Lexus, Camry and Sonata. Drivers send a price for the vehicle they offer.','Economy / Small Car':'Compact choices: Camry and Sonata. Drivers send their own price offer.','Go':'Simple city ride category. Drivers can offer an available car and price.'};
+const categoryVehicles={'Luxury SUV':['GMC','Lexus'],'Business Sedan':['Ford Taurus','Lexus','Camry','Sonata'],'Economy / Small Car':['Camry','Sonata'],'Go':['Camry','Sonata']};
+const durationDetails={'City to City':'Intercity transfer between Riyadh and another city. Examples: Riyadh to Dammam or Riyadh to Al Qassim. Drivers can send their own price offers.','One Way':'Single trip from pickup to destination.','Two Way':'Return trip: pickup, destination and return journey.','Hourly':'Book a car by the hour; confirm the required number of hours with the driver.','6 Hours':'Car booking for up to 6 hours.','8 Hours':'Car booking for up to 8 hours.','10 Hours':'Car booking for up to 10 hours.','12 Hours':'Full-day car booking for up to 12 hours.','City to City':'Intercity trip. Examples: Riyadh to Dammam or Riyadh to Al Qassim. Drivers can send their price offers.'};
+function updateSelectionDetails(){
+ const vt=document.getElementById('vehicleDetailsTitle'),vx=document.getElementById('vehicleDetailsText');
+ const ct=document.getElementById('categoryDetailsTitle'),cx=document.getElementById('categoryDetailsText');
+ const dt=document.getElementById('durationDetailsTitle'),dx=document.getElementById('durationDetailsText');
+ if(vt)vt.textContent=selectedVehicle;if(vx)vx.textContent=vehicleDetails[selectedVehicle]||'Selected vehicle option.';
+ if(ct)ct.textContent=selectedCategory;if(cx)cx.textContent=categoryDetails[selectedCategory]||'Selected category.';
+ if(dt)dt.textContent=selectedDuration;if(dx)dx.textContent=durationDetails[selectedDuration]||'Selected ride type.';
+ document.querySelectorAll('#vehicles button').forEach(b=>{const allowed=categoryVehicles[selectedCategory]||Object.keys(vehicleDetails);b.classList.toggle('hidden',!allowed.includes(b.dataset.vehicle));});
+ const allowedNow=categoryVehicles[selectedCategory]||[];if(!allowedNow.includes(selectedVehicle)){selectedVehicle=allowedNow[0]||'GMC';document.querySelectorAll('#vehicles button').forEach(b=>b.classList.toggle('active',b.dataset.vehicle===selectedVehicle));}
+ const summary=document.getElementById('selectionSummary');if(summary)summary.textContent='Selected: '+selectedVehicle+' · '+selectedCategory+' · '+selectedDuration;
+ const vd=document.getElementById('vehicleDisplay');if(vd)vd.value=selectedVehicle+' · '+selectedCategory;
+ const rd=document.getElementById('rideTypeDisplay');if(rd)rd.value=selectedDuration;
+}
+document.querySelectorAll('#vehicles button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('#vehicles button').forEach(x=>x.classList.remove('active'));b.classList.add('active');selectedVehicle=b.dataset.vehicle;updateSelectionDetails();}));
+document.querySelectorAll('#categories button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('#categories button').forEach(x=>x.classList.remove('active'));b.classList.add('active');selectedCategory=b.dataset.category;document.getElementById('categoryNote').textContent='Selected category: '+selectedCategory;updateSelectionDetails();}));
+document.querySelectorAll('#durations .service-option').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('#durations .service-option').forEach(x=>x.classList.remove('active'));b.classList.add('active');selectedDuration=b.dataset.duration;updateSelectionDetails();}));
+function toggleNotifications(){const panel=document.getElementById('notificationPanel'),button=document.querySelector('.notification-float');const opening=panel.classList.contains('hidden');panel.classList.toggle('hidden',!opening);button.setAttribute('aria-expanded',String(opening));}
+function showPage(id){const page=document.getElementById(id);if(!page)return;document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));page.classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active-nav',b.dataset.page===id));if(id==='rides')renderRides();if(id==='account')loadAccount();if(id==='chat')document.getElementById('chatInput').focus();window.scrollTo({top:0,behavior:'smooth'});}
+function loadAccount(){const a=JSON.parse(localStorage.getItem('urgentRideAccount')||'{}');document.getElementById('fullName').value=a.name||'';document.getElementById('email').value=a.email||'';document.getElementById('mobile').value=a.mobile||'';document.getElementById('pricingMode').value=pricingSettings.mode;document.getElementById('fixedPrice').value=pricingSettings.fixedPrice||'';renderReferralRecords();}
+
+function renderReferralRecords(){
+ const box=document.getElementById('referralRecords');if(!box)return;
+ const records=rides.filter(r=>r.referralCode);
+ if(!records.length){box.textContent='No referral bookings recorded yet.';return;}
+ box.innerHTML=records.map(r=>`<div class="item" style="margin-top:7px"><b>Code: ${safe(r.referralCode)}</b><br>Booking ID: ${safe(r.id)}<br>Customer: ${safe(r.customerName||'Not provided')}<br>Email: ${safe(r.customerEmail||'Not provided')}<br>Mobile: ${safe(r.customerMobile||'Not provided')}<br>Trip: ${safe(r.pickup)} → ${safe(r.destination)}</div>`).join('');
+}
+function savePricingSettings(){const mode=document.getElementById('pricingMode').value;const fixedPrice=Number(document.getElementById('fixedPrice').value||0);if(mode==='fixed'&&fixedPrice<=0){document.getElementById('pricingStatus').textContent='Please enter a valid fixed price in SAR.';return;}pricingSettings={mode,fixedPrice};localStorage.setItem('urgentRidePricing',JSON.stringify(pricingSettings));document.getElementById('pricingStatus').textContent=mode==='offers'?'Saved: Driver sends the first price offer.':'Saved: Customer will see the admin fixed price.';}
+function persist(){localStorage.setItem('urgentRideRides',JSON.stringify(rides));}
+let bookingMode='Local Ride';
+function selectBookingMode(mode){bookingMode=mode;document.getElementById('bookingModeHint').textContent=mode==='Advance Booking'?'Book ahead by selecting your travel date and time. Visitors can book before arriving in Saudi Arabia.':mode==='Airport Transfer'?'Airport pickup and drop-off service. Select your pickup, destination, date and time.':'Local ride request for nearby available drivers.';const normal=document.getElementById('bookingForm'),later=document.getElementById('laterForm');if(mode==='Advance Booking'){normal.classList.add('hidden');later.classList.remove('hidden');later.scrollIntoView({behavior:'smooth',block:'start'});}else{later.classList.add('hidden');normal.classList.remove('hidden');document.getElementById('bookingForm').scrollIntoView({behavior:'smooth',block:'start'});document.querySelector('#bookingForm h2').textContent=mode==='Airport Transfer'?'Airport Transfer Booking':'Local Ride Booking';updateSelectionDetails();}}
+function toggleBookingForm(){const form=document.getElementById('bookingForm'),later=document.getElementById('laterForm');later.classList.add('hidden');form.classList.toggle('hidden');updateSelectionDetails();if(!form.classList.contains('hidden'))form.scrollIntoView({behavior:'smooth',block:'start'});}
+function toggleLaterForm(){const form=document.getElementById('laterForm'),normal=document.getElementById('bookingForm');normal.classList.add('hidden');form.classList.toggle('hidden');if(!form.classList.contains('hidden'))form.scrollIntoView({behavior:'smooth',block:'start'});}
+function createRide(later){
+ const pickup=document.getElementById(later?'laterPickup':'pickup').value.trim(),destination=document.getElementById(later?'laterDestination':'destination').value.trim(),date=document.getElementById(later?'laterDate':'rideDate').value,time=document.getElementById(later?'laterTime':'rideTime').value,vehicle=later?document.getElementById('laterVehicle').value:selectedVehicle;
+ if(!pickup||!destination||!date||!time){alert('Please complete pickup, destination, date and time.');return;}
+ const account=JSON.parse(localStorage.getItem('urgentRideAccount')||'{}');
+ const referralCode=(document.getElementById('referralCode')?.value||'').trim().toUpperCase();
+ const ride={id:Date.now(),pickup,destination,date,time,vehicle,category:later?'':selectedCategory,duration:later?'Advance Booking':selectedDuration,bookingMode:later?'Advance Booking':bookingMode,cityToCity:!later&&selectedDuration==='City to City',passengers:later?'':document.getElementById('passengers').value,instructions:later?'':document.getElementById('instructions').value,status:pricingSettings.mode==='fixed'?'Fixed price available':'Waiting for driver offers',offers:[],pricingMode:pricingSettings.mode,fixedPrice:pricingSettings.fixedPrice,createdBy:'Customer',customerName:account.name||'',customerEmail:account.email||'',customerMobile:account.mobile||'',referralCode};
+ rides.unshift(ride);persist();if(document.getElementById('referralCode'))document.getElementById('referralCode').value='';alert(pricingSettings.mode==='fixed'?'Your ride request has been saved with the admin fixed price (demo).':'Your ride request has been saved. Drivers can now send their price offers (demo). Live driver matching needs a backend.');showPage('rides');
+}
+function setRole(r){role=r;document.getElementById('roleLabel').textContent=r;renderRides();}
+function renderRides(){
+ const c=document.getElementById('customerRides'),d=document.getElementById('driverRides');c.innerHTML='';d.innerHTML='';
+ if(role==='Customer'){
+  rides.forEach(r=>{let el=document.createElement('div');el.className='item';el.innerHTML=`<div><span class="badge">${safe(r.status)}</span></div><h3>${safe(r.vehicle)} · ${safe(r.duration)}</h3><div class="small">${safe(r.pickup)} → ${safe(r.destination)}<br>${safe(r.date)} at ${safe(r.time)}<br>${safe(r.category||'')}</div>${r.pricingMode==='fixed'?`<div class="price">Fixed Price: ${safe(r.fixedPrice)} SAR</div>`:`<div class="small">Driver offers received: ${r.offers.length}</div>`}${r.offers.map((o,i)=>`<div class="item"><b>Driver Offer</b> <span class="price">${safe(o.price)} SAR</span><br><span class="small">Vehicle: ${safe(o.vehicle||r.vehicle)}</span><br><button class="primary" onclick="acceptOffer(${r.id},${i})">Accept Offer</button></div>`).join('')}`;c.appendChild(el);});
+  if(!rides.length)c.innerHTML='<p class="small">No rides yet. Create a booking from the Book tab.</p>';
+ }else{
+  rides.forEach(r=>{let el=document.createElement('div');el.className='item';el.innerHTML=`<span class="badge">${safe(r.status)}</span><h3>${safe(r.vehicle)} · ${safe(r.duration)}</h3><div class="small">${safe(r.pickup)} → ${safe(r.destination)}<br>${safe(r.date)} at ${safe(r.time)}<br>${safe(r.category||'')}</div>${r.pricingMode==='fixed'?`<div class="small">Admin fixed price: <b>${safe(r.fixedPrice)} SAR</b>. Driver offer is disabled for this booking.</div>`:`<label>Vehicle You Are Offering</label><select id="offerVehicle-${r.id}">${(categoryVehicles[r.category]||[r.vehicle]).map(v=>`<option>${safe(v)}</option>`).join('')}</select><label>Your Price Offer (SAR)</label><input id="offer-${r.id}" type="number" min="1" placeholder="Enter your price"><button class="primary" onclick="sendOffer(${r.id})">Send Price Offer to Customer</button>`}`;d.appendChild(el);});
+  if(!rides.length)d.innerHTML='<p class="small">No ride requests are available in this demo.</p>';
+ }
+}
+function sendOffer(id){let ride=rides.find(x=>x.id===id);if(!ride||ride.pricingMode==='fixed'){alert('This booking uses the admin fixed-price option. Driver offers are disabled.');return;}let price=document.getElementById('offer-'+id).value;if(!price||Number(price)<=0){alert('Enter a valid price.');return;}let r=rides.find(x=>x.id===id);const offeredVehicle=document.getElementById('offerVehicle-'+id)?.value||r.vehicle;r.offers.push({price:Number(price),vehicle:offeredVehicle});r.status='Price offers received';persist();alert('Offer saved in this demo.');renderRides();}
+function acceptOffer(id,i){let r=rides.find(x=>x.id===id);if(!r)return;r.status='Offer accepted';r.acceptedOffer=r.offers[i];persist();alert('Offer accepted in this demo. Driver contact details remain private.');renderRides();}
+function sendChat(){let input=document.getElementById('chatInput'),t=input.value.trim();if(!t){alert('Please type a message first.');return;}messages.push(t);document.getElementById('chatMessages').innerHTML=messages.map(m=>'<div class="item">'+safe(m)+'</div>').join('');input.value='';document.getElementById('chatMessages').scrollTop=document.getElementById('chatMessages').scrollHeight;}
+function saveAccount(){const account={name:document.getElementById('fullName').value.trim(),email:document.getElementById('email').value.trim(),mobile:document.getElementById('mobile').value.trim()};localStorage.setItem('urgentRideAccount',JSON.stringify(account));document.getElementById('accountStatus').textContent='Account details saved on this device.';}
+function requestOtp(){const email=document.getElementById('email').value.trim();if(!email){alert('Enter your email address first.');return;}document.getElementById('otpStatus').textContent='Email OTP service is not connected in this demo. No email has been sent.';}
+function verifyOtp(){document.getElementById('otpStatus').textContent='Verification is unavailable until secure email OTP delivery is connected.';}
+function supportRequest(){let t=document.getElementById('supportText').value.trim();if(!t){alert('Please describe your issue.');return;}document.getElementById('supportStatus').textContent='Your support request is saved in this demo only. A live support inbox must be connected.';document.getElementById('supportText').value='';}
+function safe(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+(function init(){if(!localStorage.getItem('urgentRidePricing'))localStorage.setItem('urgentRidePricing',JSON.stringify(pricingSettings));let a=JSON.parse(localStorage.getItem('urgentRideAccount')||'{}');if(a.name)document.getElementById('fullName').value=a.name;if(a.email)document.getElementById('email').value=a.email;if(a.mobile)document.getElementById('mobile').value=a.mobile;document.getElementById('vehicleDisplay').value=selectedVehicle+' · '+selectedCategory;updateSelectionDetails();let today=new Date().toISOString().slice(0,10);['rideDate','laterDate'].forEach(id=>document.getElementById(id).min=today);})();
+</script>
+</body>
+</html>
