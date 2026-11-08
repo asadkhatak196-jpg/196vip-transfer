@@ -2,7 +2,7 @@
  * Navigation pages are cached by their own URL. In particular, install.html
  * can no longer overwrite the app's /index.html cache entry.
  */
-const CACHE_NAME = 'transfer-pwa-v74';
+const CACHE_NAME = 'transfer-pwa-v75';
 const APP_SHELL = [
   '/', '/index.html', '/install.html', '/manifest.json', '/style.css',
   '/app.js', '/config.js', '/transfer-icon.svg', '/icon-180.png',

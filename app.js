@@ -13,7 +13,7 @@ function save(){const safe={...state,session:null};localStorage.setItem(KEY,JSON
 function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function money(v){return `${Number(v||0).toLocaleString()} SAR`}
 function pickupMapUrl(b){let q=(b.pickupLat!=null&&b.pickupLng!=null)?`${b.pickupLat},${b.pickupLng}`:b.pickup;return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(q)}&travelmode=driving`}
-function role(){let p=location.pathname.replace(/\/+$/,"").split("/").pop();return ["customer","driver","admin"].includes(p)?p:"home"}
+function role(){let p=location.pathname.replace(/^\/+|\/+$/g,"").split("/")[0];return ["customer","driver","admin"].includes(p)?p:"home"}
 function go(p){history.pushState({},"",p);render()}window.addEventListener("popstate",render);
 function me(){return state.session}function profile(){return state.profiles[me()?.email]||{}}
 function setProfile(p){state.profiles[me().email]={...profile(),...p};save()}
