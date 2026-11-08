@@ -1,0 +1,27 @@
+TRANSFER — BUILD 74
+PWA SERVICE WORKER CACHE FIX
+
+This build corrects the navigation cache collision found during the Build 73 review.
+
+What changed:
+- Service worker cache version updated to transfer-pwa-v74.
+- Navigation responses are stored under their own request URL.
+- install.html (including customer/driver query variants) can no longer overwrite /index.html.
+- Offline navigation first checks the exact requested page, then the app home page.
+- Static app-shell assets remain cache-first and are refreshed from the network when missing.
+- Activation removes older transfer-pwa-* caches so the new worker can take control.
+
+Deployment:
+1. Extract this ZIP.
+2. Upload/replace the complete contents in the GitHub repository root.
+3. Deploy the site over HTTPS.
+4. Open the site once online and allow the service worker to activate.
+5. For an already-installed app, close and reopen it or refresh once so the new worker activates.
+6. Test /install.html?role=customer and /install.html?role=driver on Android Chrome and iPhone Safari.
+
+Important:
+- Installation still requires user confirmation. A website cannot silently install itself from a link.
+- iPhone installation uses Safari Share > Add to Home Screen.
+- PWA caching does not make live bookings, chat, authentication, or Supabase data work offline.
+- No Supabase database migration is required for this cache-only fix.
+- Keep existing Supabase SQL files; do not rerun the original setup SQL.

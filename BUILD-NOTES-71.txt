@@ -1,0 +1,33 @@
+TRANSFER BUILD 71
+
+This build extends Build 70 with live Supabase booking and driver-offer workflows.
+
+CONNECTED TO THE CONFIGURED SUPABASE PROJECT
+- Customer Now Booking, Later Booking, and Airport Transfer requests are inserted into vip_bookings.
+- Approved online drivers load open booking requests from Supabase.
+- Driver price offers and ETA are inserted into vip_offers.
+- Customers load offers live, sorted by lowest price, with vehicle/category/photo where available.
+- Vehicle plate is returned only for the accepted offer.
+- Customer acceptance is an atomic database operation: one offer is accepted and the other pending offers are rejected.
+- Customer/admin booking cancellation is handled by a protected database function.
+- Driver online/offline state is stored in vip_profiles through a protected function.
+- Admin can approve/disable a driver using a protected database function.
+- Admin base prices and offer enable/disable setting are saved in vip_settings.
+- Supabase Realtime is enabled for bookings, offers, settings, applications and profiles.
+
+DATABASE
+- SUPABASE-BOOKING-OFFERS-71.sql records the additive Build 71 database changes.
+- These changes were applied directly to the configured Supabase project and key functions/publication membership were verified on 2026-11-08.
+- Do not run old setup.sql again; it is not needed for this update and must be preserved.
+- The existing 70 SQL auth hardening file is retained for reference; it was not automatically run as part of Build 71.
+
+IMPORTANT REMAINING WORK
+- Driver application document uploads and vehicle photo uploads to private Supabase Storage are not connected in this build. Vehicle photo is shown only when a photo URL already exists in the database.
+- In-app chat, push notifications/customer Bell delivery, trip progress, live GPS tracking, and rating persistence are not connected to Supabase in this build.
+- The customer Bell currently confirms that the booking is live; approved online drivers receive the booking through their live request feed. It does not send a separate push notification.
+- End-to-end live testing still requires signing in with a real customer, an approved driver, and the admin account.
+
+SECURITY
+- Browser uses only the Supabase publishable key from config.js.
+- Never place service_role or database passwords in this app.
+- RLS and database functions enforce booking ownership, approved-driver offer creation, customer-only offer acceptance, and admin-only driver approval.

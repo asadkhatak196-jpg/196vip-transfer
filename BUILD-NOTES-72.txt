@@ -1,0 +1,26 @@
+TRANSFER BUILD 72 — OPERATIONS COMPLETION
+
+Included in this build:
+- Supabase-backed private customer/driver chat using vip_messages.
+- Realtime refresh for messages and notifications while the app is open.
+- Automatic database notification to every approved online driver when a new booking is created. No customer Bell button is required.
+- Automatic notification to the other participant after a new chat message.
+- Customer and driver notification inbox with mark-as-read.
+- Private Supabase Storage bucket for licence, identity/Iqama, registration and insurance documents; driver and Admin access only.
+- Public vehicle-photo bucket with owner-only uploads and public read for offer cards.
+- Persistent driver ride workflow: accepted -> driver_arrived -> in_progress -> completed.
+- Driver accepted-trip history and Admin ride-status controls.
+- Database-backed Admin offer removal.
+- Driver onboarding access while the account is still a customer in the database; actual driver approval remains Admin-controlled.
+
+DATABASE:
+The Build72 SQL migration was applied to the connected Supabase project on 2026-11-08. It is also included as SUPABASE-BUILD72.sql for reference. Existing setup.sql and user/booking data were not deleted.
+
+IMPORTANT TESTING LIMIT:
+JavaScript syntax check passed. Supabase schema/functions/buckets/policies were verified after migration. This environment cannot sign in as the user's separate Customer, Driver and Admin accounts, upload actual personal documents, or conduct a real three-account trip. Therefore do not treat end-to-end account testing as completed until those accounts are tested on the deployed app.
+
+NOTIFICATION SCOPE:
+Notifications are stored in Supabase and delivered to the in-app inbox in real time while the app is open. Background mobile push notifications while the browser/app is closed still require a push provider/service-worker subscription and device permission; they are not claimed as enabled in this build.
+
+DEPLOY:
+Upload the files in this ZIP to the existing Netlify/GitHub project only when ready. Keep config.js publishable key only; never add a service_role key. Preserve setup.sql.

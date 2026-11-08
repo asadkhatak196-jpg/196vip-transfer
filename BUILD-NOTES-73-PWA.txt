@@ -1,0 +1,20 @@
+TRANSFER BUILD 73 — PWA INSTALLATION UPDATE
+
+This build adds Progressive Web App installation support to the existing Build72 app:
+- Service worker with app-shell caching and offline fallback for the main page.
+- Web app manifest with standalone display, PNG icons, and Customer/Driver shortcuts.
+- Apple mobile web app metadata and 180x180 Apple touch icon.
+- Install landing page: /install.html?role=customer or /install.html?role=driver
+- The install page uses the Android beforeinstallprompt event where supported and gives iPhone Safari Add to Home Screen steps.
+
+IMPORTANT PLATFORM LIMITATION:
+A website cannot silently force-install itself on Android or iPhone just by opening a URL. The user must confirm installation. iPhone users generally install through Safari Share > Add to Home Screen. Android installation prompts depend on browser and installability criteria.
+
+DEPLOY:
+Upload the contents of this ZIP to the existing site root and deploy. Keep config.js and all existing Supabase SQL files. No SQL changes are required for this PWA update.
+
+TEST AFTER DEPLOY:
+1. Open /manifest.json and /sw.js; both should load.
+2. Open /install.html?role=customer on Android Chrome and iPhone Safari.
+3. Install/Add to Home Screen, open the icon, and test /customer and /driver login routes.
+4. Confirm the app still connects online to Supabase. Offline caching only covers the app shell; login, bookings, offers, chat and database actions require internet.

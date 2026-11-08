@@ -1,0 +1,25 @@
+TRANSFER — BUILD 70
+
+WHAT CHANGED
+- Replaced the fake/local preview sign-in with real Supabase email OTP authentication.
+- Added 6-digit OTP verification and resend flow.
+- Customer, Driver, and Admin routes are checked against the signed-in account and database role.
+- Admin access is checked using the protected vip_is_admin() function (primary admin or enabled secondary admin).
+- Driver access is denied until the database role is set to driver by the administrator after approval.
+- Auth session is managed by Supabase; the app no longer stores a fake session in localStorage.
+- Added SUPABASE-AUTH-SECURITY.sql: new accounts default to customer, missing profiles are safely backfilled, and profile update grants prevent users from editing their own role/email/availability.
+- Configured the existing Supabase project URL and public publishable key. The publishable key is intended for browser use; never add a service_role/secret key.
+
+REQUIRED ONE-TIME SETUP
+1. In the existing Supabase project, open SQL Editor.
+2. Review and run SUPABASE-AUTH-SECURITY.sql once. It is additive and does not delete bookings or existing profiles.
+3. In Supabase Authentication > URL Configuration, set the production Site URL to your Transfer HTTPS domain and add that domain to Redirect URLs.
+4. Ensure Email OTP is enabled.
+5. Deploy the web files to the existing Netlify/GitHub site.
+6. Test with separate customer, pending driver, approved driver, main admin and (if used) secondary admin accounts.
+
+ADMIN
+Main admin email recognized by the existing protected database function: Asadkhatak196@gmail.com. Do not create an admin by editing browser code or user metadata.
+
+IMPORTANT LIMIT
+This build secures sign-in and panel access, but the booking, offer, chat, notification and dashboard interactions still use Build 69's local preview data. They are NOT yet live multi-user Supabase operations. This package does not deploy the SQL migration or change the live website/database by itself. Do not describe the whole taxi app as production-ready until the live data workflows are connected and tested.
