@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#ffffff"><meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="/manifest.json"><link rel="apple-touch-icon" href="/icon-180.png"><link rel="icon" href="/icon-192.png">
+<title>Install Transfer</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#fff;color:#111;font:16px/1.55 Arial,sans-serif}.wrap{max-width:560px;margin:0 auto;padding:28px 20px 48px}.logo{width:76px;height:76px;border:3px solid #111;border-radius:22px;display:grid;place-items:center;font-size:48px;font-weight:800;margin:18px auto}.brand{text-align:center;font-size:28px;font-weight:800}.sub{text-align:center;color:#555;margin:8px 0 28px}.card{border:1px solid #ddd;border-radius:18px;padding:20px;margin:14px 0}.btn{display:block;width:100%;border:0;border-radius:12px;background:#111;color:white;padding:15px;font-size:17px;font-weight:700;text-align:center;text-decoration:none;cursor:pointer}.hint{color:#555;font-size:14px}.steps{padding-left:22px}.hidden{display:none}.role{font-weight:700;text-transform:capitalize}
+</style>
+</head><body><main class="wrap"><div class="logo">T</div><div class="brand">Transfer</div><p class="sub">Install the app on your phone</p>
+<section class="card"><p>Install Transfer for <span class="role" id="role">your account</span>.</p><button class="btn" id="install" type="button">Install Transfer</button><p id="status" class="hint">If your phone supports direct installation, the install prompt will appear.</p></section>
+<section class="card" id="android-help"><b>Android</b><ol class="steps"><li>Open this link in Chrome.</li><li>Tap <b>Install Transfer</b>, or open the ⋮ menu.</li><li>Choose <b>Install app</b> or <b>Add to Home screen</b>.</li></ol></section>
+<section class="card" id="ios-help"><b>iPhone</b><ol class="steps"><li>Open this link in Safari.</li><li>Tap the <b>Share</b> button.</li><li>Choose <b>Add to Home Screen</b>, then tap <b>Add</b>.</li></ol><p class="hint">iPhone requires this confirmation; websites cannot silently install an app from a link.</p></section>
+<a class="btn" id="open-app" href="/">Open Transfer</a><p class="hint" style="text-align:center;margin-top:20px">Customer and Driver use the same installed Transfer app. Sign in and choose your role.</p>
+</main><script>
+const params=new URLSearchParams(location.search), role=params.get('role'); if(['customer','driver'].includes(role)){document.getElementById('role').textContent=role;document.getElementById('open-app').href='/'+role;}
+let deferredPrompt=null;const button=document.getElementById('install'),status=document.getElementById('status');
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;button.disabled=false;status.textContent='Your phone can install Transfer now.';});
+button.addEventListener('click',async()=>{if(deferredPrompt){deferredPrompt.prompt();const choice=await deferredPrompt.userChoice;status.textContent=choice.outcome==='accepted'?'Transfer installation started.':'Installation was cancelled.';deferredPrompt=null;}else{status.textContent='Use the browser menu instructions below. On iPhone, use Safari Share → Add to Home Screen.';}});
+window.addEventListener('appinstalled',()=>{status.textContent='Transfer was installed successfully.';button.textContent='Installed';button.disabled=true;});
+if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));
+</script></body></html>
