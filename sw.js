@@ -1,13 +1,14 @@
-/* Transfer PWA service worker — Build 74
- * Navigation pages are cached by their own URL. In particular, install.html
- * can no longer overwrite the app's /index.html cache entry.
+/* Transfer PWA service worker — Build 75
+ * Network-first for app code/config so published fixes are not trapped in cache.
+ * Navigation pages remain cached under their own URL.
  */
-const CACHE_NAME = 'transfer-pwa-v110';
+const CACHE_NAME = 'transfer-pwa-v114';
 const APP_SHELL = [
-  '/', '/index.html', '/install.html', '/manifest.json', '/style.css',
-  '/app.js', '/config.js', '/transfer-icon.svg', '/icon-180.png',
+  '/', '/index.html', '/manifest.json', '/style.css',
+  '/app.js', '/config.js', '/icon-180.png',
   '/icon-192.png', '/icon-512.png'
 ];
+const UPDATE_FIRST = new Set(['/app.js', '/config.js', '/style.css', '/manifest.json']);
 
 self.addEventListener('install', event => {
   event.waitUntil(
@@ -31,7 +32,6 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   const request = event.request;
   if (request.method !== 'GET') return;
-
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
 
@@ -39,26 +39,36 @@ self.addEventListener('fetch', event => {
     event.respondWith((async () => {
       const cache = await caches.open(CACHE_NAME);
       try {
-        const response = await fetch(request);
-        if (response && response.ok) {
-          // Keep each page at its own URL; never store install.html as index.html.
-          await cache.put(request, response.clone());
-        }
+        const response = await fetch(request, { cache: 'no-store' });
+        if (response && response.ok) await cache.put(request, response.clone());
         return response;
       } catch (error) {
-        return (await cache.match(request)) ||
-          (await cache.match(url.pathname)) ||
+        return (await cache.match(request)) || (await cache.match(url.pathname)) ||
           (await cache.match('/index.html')) ||
           new Response('Transfer is offline. Please reconnect and try again.', {
-            status: 503,
-            headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+            status: 503, headers: { 'Content-Type': 'text/plain; charset=utf-8' }
           });
       }
     })());
     return;
   }
 
-  // App-shell assets use cache-first, then refresh the cache from the network.
+  const path = url.pathname;
+  if (UPDATE_FIRST.has(path)) {
+    event.respondWith((async () => {
+      const cache = await caches.open(CACHE_NAME);
+      try {
+        const response = await fetch(request, { cache: 'no-store' });
+        if (response && response.ok) await cache.put(request, response.clone());
+        return response;
+      } catch (error) {
+        return (await cache.match(request)) || new Response('', { status: 504, statusText: 'Offline' });
+      }
+    })());
+    return;
+  }
+
+  // Cache-first for stable images/icons; update the cache when missing.
   event.respondWith((async () => {
     const cached = await caches.match(request);
     if (cached) return cached;

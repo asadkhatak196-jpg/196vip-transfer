@@ -22,3 +22,7 @@ button, a.btn, input, select, textarea { touch-action: manipulation; }
 .role-nav button.active{background:#111;color:#fff;border-color:#111}
 .field input[type=file]{padding:9px;font-size:12px;background:#fafafa}
 @media(max-width:650px){.role-nav{position:sticky;bottom:8px;margin:22px 0 0;justify-content:stretch}.role-nav button{flex:1;padding:9px 7px}.session-label{max-width:120px}.action-row .btn{flex:1}}
+
+/* Interactive pickup map */
+.transfer-map{width:100%;height:260px;margin-top:10px;border:1px solid var(--line,#dce3ea);border-radius:14px;overflow:hidden;z-index:0;background:#edf2f7}
+.transfer-map .leaflet-control-attribution{font-size:9px}

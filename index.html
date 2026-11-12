@@ -4,12 +4,12 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#ffffff"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="Transfer"><meta name="description" content="Transfer — airport transfers and city-to-city rides">
 <link rel="manifest" href="/manifest.json"><link rel="icon" href="/icon-192.png" type="image/png"><link rel="apple-touch-icon" href="/icon-180.png">
-<link rel="stylesheet" href="/style.css"><title>Transfer</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""><link rel="stylesheet" href="/style.css"><title>Transfer</title>
 </head>
 <body>
 <header class="topbar"><a class="brand" href="/" data-go="/"><span class="brand-mark">T</span><span>Transfer</span></a><div class="top-actions"><span id="session-label" class="session-label">Preview mode</span><button id="settings-shortcut" class="icon-btn hidden" aria-label="Settings">⚙</button><button id="logout-btn" class="btn btn-quiet hidden">Sign out</button></div></header>
 <main id="app" class="container" aria-live="polite"></main>
 <footer class="footer"><span>Transfer</span><a href="mailto:Limuzin@196vip.si">Support: Limuzin@196vip.si</a></footer>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="/config.js"></script><script src="/app.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="/config.js"></script><script src="/app.js"></script>
 <script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(e=>console.warn("PWA service worker:",e)));}</script>
 </body></html>

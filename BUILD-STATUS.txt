@@ -1,0 +1,16 @@
+TRANSFER BUILD 201 — STATUS
+
+This is a packaged candidate build, not a live-verified production release.
+Static checks performed:
+- JavaScript syntax check (app.js and sw.js): passed.
+- ZIP integrity check: performed after packaging.
+- RPC name cross-check against included SQL files: all RPC names referenced by app.js were found in the included SQL set.
+
+Not verified:
+- Live sign-in and database behavior against the user's Supabase project.
+- Full Customer, Driver and Admin end-to-end workflows.
+- Storage bucket policies and document uploads in the live project.
+- Real OS push notifications while the app is closed.
+- Background GPS while the browser/app is suspended.
+
+Do not treat this as a guaranteed production-ready release. The README lists migrations and tests that must be reviewed before production use. Do not run base-setup.sql or setup.sql on the existing database.
