@@ -2,7 +2,7 @@
  * Network-first for app code/config so published fixes are not trapped in cache.
  * Navigation pages remain cached under their own URL.
  */
-const CACHE_NAME = 'transfer-pwa-v114';
+const CACHE_NAME = 'transfer-pwa-v115';
 const APP_SHELL = [
   '/', '/index.html', '/manifest.json', '/style.css',
   '/app.js', '/config.js', '/icon-180.png',
